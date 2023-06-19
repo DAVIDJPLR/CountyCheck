@@ -103,6 +103,7 @@ public class CountyCheck {
                 driver.get(url);
 
                 while (!(undecideds.peek() == null)){
+                    System.out.println("Still Going");
                     Address current = new Address(undecideds.poll());
                     try {
                         Web.ID.click(driver, "reset123");
