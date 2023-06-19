@@ -31,6 +31,18 @@ public class CountyCheck {
         }
     }
 
+    public static ArrayList<String> counties(String state){
+
+        state = state.toUpperCase();
+
+        switch (state){
+            case "ILLINOIS":
+                return ILLINOIS;
+            default:
+                return null;
+        }
+    }
+
     public class Illinois {
 
         private Illinois(){}
