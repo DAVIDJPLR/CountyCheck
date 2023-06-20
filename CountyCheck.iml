@@ -103,7 +103,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Dependancies/Web_1-0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Dependancies/Address_1-5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -112,7 +112,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Dependancies/Address_1-4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Dependancies/Excel_1-7.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -121,7 +121,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Dependancies/Excel_1-6.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Dependancies/Web_1-1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
