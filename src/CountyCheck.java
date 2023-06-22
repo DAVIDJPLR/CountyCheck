@@ -6,8 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static java.lang.System.exit;
-
 public class CountyCheck {
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS"}));
@@ -78,24 +76,19 @@ public class CountyCheck {
                 Queue<ArrayList<String>> undecideds = Excel.read(sourceFileName);
                 try {
                     if (undecideds == null) {
-                        throw new Exception("An unknown error has occurred");
+                        throw new Exception("No undecided addresses were found");
                     }
                 } catch (Exception e){
-                    JOptionPane.showMessageDialog(new JPanel(), "An unknown error has occurred\nYour county check progress should have been saved");
-                    exit(1);
+                    JOptionPane.showMessageDialog(new JPanel(), "No undecided addresses were found");
+                    return;
                 }
                 undecideds.poll();
 
                 Queue<ArrayList<String>> exceptions = new LinkedList<>();
-                try {
-                    if (Files.isRegularFile(Paths.get(resultFileName))) {
-                        exceptions = Excel.read(resultFileName);
-                        exceptions.poll();
-                        throw new Exception("An unknown error has occurred");
-                    }
-                } catch (Exception e){
-                    JOptionPane.showMessageDialog(new JPanel(), "An unknown error has occurred\nYour county check progress should have been saved");
-                    exit(1);
+
+                if (Files.isRegularFile(Paths.get(resultFileName))) {
+                    exceptions = Excel.read(resultFileName);
+                    exceptions.poll();
                 }
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -147,8 +140,8 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An unknown error has occurred while county checking " + current.toString() + "\nYour county check progress should have been saved");
-                        exit(1);
+                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: " + e.getMessage() + "\nYour county check progress should have been saved");
+                        return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
