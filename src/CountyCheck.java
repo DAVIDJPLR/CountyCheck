@@ -140,7 +140,7 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: " + e.getMessage() + "\nYour county check progress should have been saved");
+                        JOptionPane.showMessageDialog(currentFrame, "<html><body><p style='width: 200px;'>" + "An error has occurred while county checking " + current.toString() + "\nError: " + e.getMessage() + "\n" + "\nYour county check progress should have been saved" + "</p></body></html>");
                         return;
                     }
                 }
