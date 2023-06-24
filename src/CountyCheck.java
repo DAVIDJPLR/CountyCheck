@@ -54,6 +54,9 @@ public class CountyCheck {
                 case "KANE":
                     CountyCheck.Illinois.Kane.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                     break;
+                case "LAKE":
+                    CountyCheck.Illinois.Lake.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    break;
                 default:
                     JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
                     break;
@@ -161,7 +164,7 @@ public class CountyCheck {
 
             private Kane(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame) {
+            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
 
                 String screenshotPath = screenShotPath(resultFileName, currentFrame);
 
@@ -250,6 +253,81 @@ public class CountyCheck {
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
                         JOptionPane.showMessageDialog(currentFrame,"An error has occurred while county checking " + current.toString() + "\nError: Selenium:Kane" + "\n" + "\nYour county check progress should have been saved");
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+            }
+        }
+
+        public class Lake{
+
+            private static final String url = "https://tax.lakecountyil.gov/search/commonsearch.aspx?mode=realprop";
+            private static final int implicitWait = 5;
+
+            public Lake(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+
+                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+
+                        Web.ID.type(driver, "inpNo", current.getNumber());
+
+                        Web.ID.type(driver, "inpStreet", current.getName());
+
+                        Web.ID.type(driver, "inpZip1", city);
+                        Web.hitEnter(driver);
+
+                        Web.ID.click(driver, "btSearch");
+
+                        if (Web.xPath.exists(driver, "/html/body/div[1]/div[3]/section/div/form/table/tbody/tr/td/div/div/table[2]/tbody/tr/td/table/tbody/tr[3]/td/center/table[1]/tbody/tr[1]/td/div/p\n")){
+                            //No result
+                            Web.ID.clearTextBox(driver, "inpNo");
+                            Web.ID.clearTextBox(driver, "inpStreet");
+                        } else{
+                            //result
+                            current.setPin((Web.xPath.getText(driver, "/html/body/div[1]/div[3]/section/div/form/div[3]/div/div/table/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr[1]/td[1]\n")).split(" ")[1]);
+                            current.setPropertyType(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/section/div/form/div[3]/div/div/table/tbody/tr/td/table/tbody/tr[2]/td/div/div[1]/table[2]/tbody/tr[15]/td[2]\n"));
+                            current.setTaxCode((Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/section/div/form/div[3]/div/div/table/tbody/tr/td/table/tbody/tr[2]/td/div/div[1]/table[2]/tbody/tr[25]/td[2]\n")).split(" - ")[0]);
+
+                            Web.xPath.click(driver, "/html/body/div[1]/div[3]/div/nav/div/div/ul/li[19]/a/span\n");
+                            current.setLandValue(Web.xPath.getText(driver, "/html/body/div[1]/div[3]/section/div/form/div[3]/div/div/table/tbody/tr/td/table/tbody/tr[2]/td/div/div[1]/table[2]/tbody/tr[2]/td[4]\n"));
+                            current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/section/div/form/div[3]/div/div/table/tbody/tr/td/table/tbody/tr[2]/td/div/div[1]/table[2]/tbody/tr[2]/td[5]\n"));
+
+                            current.setConfirmedCity(city);
+                            current.setConfirmedCounty("LAKE");
+
+                            if (current.isException()){
+                                Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 100);
+                                exceptions.offer(current.toStringArrayList());
+                            }
+
+                            driver.get(url);
+                        }
+
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        JOptionPane.showMessageDialog(currentFrame,"An error has occurred while county checking " + current.toString() + "\nError: Selenium:Lake" + "\n" + "\nYour county check progress should have been saved");
                         return;
                     }
                 }
