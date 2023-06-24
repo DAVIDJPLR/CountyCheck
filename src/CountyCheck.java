@@ -57,6 +57,9 @@ public class CountyCheck {
                 case "LAKE":
                     CountyCheck.Illinois.Lake.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                     break;
+                case "LASALLE":
+                    CountyCheck.Illinois.Lasalle.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    break;
                 default:
                     JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
                     break;
@@ -268,7 +271,7 @@ public class CountyCheck {
             private static final String url = "https://tax.lakecountyil.gov/search/commonsearch.aspx?mode=realprop";
             private static final int implicitWait = 5;
 
-            public Lake(){}
+            private Lake(){}
 
             public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
 
@@ -330,6 +333,91 @@ public class CountyCheck {
                         JOptionPane.showMessageDialog(currentFrame,"An error has occurred while county checking " + current.toString() + "\nError: Selenium:Lake" + "\n" + "\nYour county check progress should have been saved");
                         return;
                     }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+            }
+        }
+
+        public class Lasalle{
+
+            private static final String url = "http://lasallecountysa.org/propertysearch/searchaddress.aspx";
+            private static final int implicitWait = 5;
+            private Lasalle(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+
+                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+                   try{
+
+                       Web.xPath.type(driver, "/html/body/div[1]/div[3]/div[1]/form/span/span/span/p[1]/font/input\n", current.getNumber());
+
+                       Web.ID.type(driver, "mStrname", current.getName());
+
+                       Web.xPath.click(driver, "/html/body/div[1]/div[3]/div[1]/form/span/span/span/font/span/p/span/input\n");
+
+                       if (Web.xPath.getText(driver, "/html/body/form/div[3]/div[3]/div/div/font/span/div/table/tbody/tr[2]/td\n").toUpperCase().contains("NO RESULTS FOUND")){
+                           //no result
+                           driver.get(url);
+                       } else{
+                           //result
+                           boolean found = false;
+                           boolean fail = false;
+                           int failCount = 0;
+                           int count = 1;
+                           while ((found == false)&&(fail == false)){
+                               try{
+                                   String testCity = Web.xPath.getTextFast(driver, "/html/body/form/div[3]/div[3]/div/div/font/span/div/table/tbody/tr[" + count + "]/td[3]\n");
+                                   if (city.toUpperCase().equalsIgnoreCase(testCity.toUpperCase())){
+                                       found = true;
+                                   }
+                               } catch (Exception e){
+                                   failCount += 1;
+                                   if (failCount >= 3) {
+                                       fail = true;
+                                   }
+                               }
+                               count += 1;
+                           }
+                           if (found == true){
+                               Web.xPath.click(driver, "/html/body/form/div[3]/div[3]/div/div/font/span/div/table/tbody/tr[" + (count-1) + "]/td[1]/a\n");
+
+                               current.setPin(Web.ID.getText(driver, "FormView1_pinLabel"));
+                               current.setPropertyType(Web.xPath.getTextFast(driver, "/html/body/form/span/table/tbody/tr/td/table[2]/tbody/tr/td/span/b/table/tbody/tr[1]/td[1]/span/b/div/table/tbody/tr[1]/td[2]\n"));
+                               current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/span/table/tbody/tr/td/table[4]/tbody/tr[2]/td/span/div/table/tbody/tr[2]/td[4]\n"));
+                               current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/span/table/tbody/tr/td/table[4]/tbody/tr[2]/td/span/div/table/tbody/tr[2]/td[6]\n"));
+                               current.setTaxCode(city);
+                               current.setConfirmedCity(city);
+                               current.setConfirmedCounty("LASALLE");
+                               if (current.isException()){
+                                   Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 67);
+                                   exceptions.offer(current.toStringArrayList());
+                               }
+                           }
+                           driver.get(url);
+                       }
+                   } catch (Exception e) {
+                       undecideds.offer(current.toStringArrayList());
+                       Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                       Excel.write(resultFileName, collectionConvert(exceptions), header);
+                       JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:LaSalle" + "\n" + "\nYour county check progress should have been saved");
+                       return;
+                   }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
