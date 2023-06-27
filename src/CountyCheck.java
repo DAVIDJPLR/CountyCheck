@@ -80,6 +80,24 @@ public class CountyCheck {
                 case "BOONE":
                     CountyCheck.Illinois.Boone.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                     break;
+//                case "HENRY":
+//                    CountyCheck.Illinois.Henry.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "MARION":
+//                    CountyCheck.Illinois.Marion.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "CHAMPAGN":
+//                    CountyCheck.Illinois.Champaign.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "MCLEAN":
+//                    CountyCheck.Illinois.Mclean.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "MASSAC":
+//                    CountyCheck.Illinois.Massac.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "FAYETTE":
+//                    CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
                 default:
                     JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
                     break;
@@ -1114,6 +1132,42 @@ public class CountyCheck {
                 driver.close();
                 JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
             }
+        }
+
+        public class Henry{
+            private static final String url = "https://henryil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Henry(){}
+        }
+
+        public class Marion{
+            private static final String url = "https://marionil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Marion(){}
+        }
+
+        public class Champaign{
+            private static final String url = "https://champaignil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Champaign(){}
+        }
+
+        public class Mclean{
+            private static final String url = "https://mcleanil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Mclean(){}
+        }
+
+        public class Massac{
+            private static final String url = "https://massac.il.bhamaps.com/";
+            private static final int implicitWait = 5;
+            private Massac(){}
+        }
+
+        public class Fayette{
+            private static final String url = "https://il1193.cichosting.com/atasportal/parcelSearch.aspx";
+            private static final int implicitWait = 5;
+            private Fayette(){}
         }
     }
 
