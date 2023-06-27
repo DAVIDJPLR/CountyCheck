@@ -1,5 +1,7 @@
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import javax.swing.*;
@@ -95,9 +97,9 @@ public class CountyCheck {
 //                case "MASSAC":
 //                    CountyCheck.Illinois.Massac.countyCheck(sourceFileName, resultFileName, city, currentFrame);
 //                    break;
-//                case "FAYETTE":
-//                    CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city, currentFrame);
-//                    break;
+                case "FAYETTE":
+                    CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    break;
                 default:
                     JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
                     break;
@@ -1575,7 +1577,7 @@ public class CountyCheck {
 
         public class Massac{
             private static final String url = "https://massac.il.bhamaps.com/";
-            private static final int implicitWait = 5;
+            private static final int implicitWait = 10;
             private Massac(){}
         }
 
@@ -1583,6 +1585,109 @@ public class CountyCheck {
             private static final String url = "https://il1193.cichosting.com/atasportal/parcelSearch.aspx";
             private static final int implicitWait = 5;
             private Fayette(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+
+                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                Actions search = new Actions(driver);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+
+                        Web.ID.click(driver, "MainContent_btnReset2");
+
+                        Web.ID.carefulClick(driver, "MainContent_ddlTaxYear");
+                        search.sendKeys(Keys.ARROW_DOWN).perform();
+                        search.sendKeys(Keys.ENTER).perform();
+
+                        Web.ID.type(driver, "MainContent_txtStreetNumber", current.getNumber());
+
+                        Web.ID.type(driver, "MainContent_txtStreetName", current.getName());
+
+                        Web.ID.type(driver, "MainContent_txtCity", city);
+
+                        Web.ID.click(driver, "MainContent_btnSearch2");
+
+                        if (Web.xPath.exists(driver, "/html/body/form/table/tbody/tr[2]/td[2]/section/table[2]/tbody/tr/td/div/table/tbody/tr[2]/td[4]\n")){
+                            //result
+                            boolean found = false;
+                            boolean fail = false;
+                            int count = 2;
+
+                            while ((found == false)&&(fail == false)){
+                                try{
+                                    String test = Web.xPath.getText(driver, "/html/body/form/table/tbody/tr[2]/td[2]/section/table[2]/tbody/tr/td/div/table/tbody/tr[" + count + "]/td[4]\n").toUpperCase();
+                                    if ((test.contains(current.getNumber().toUpperCase()))&&(test.contains(current.getName().toUpperCase()))){
+                                        found = true;
+                                    }
+                                } catch (Exception e){
+                                    fail = true;
+                                }
+                                count += 1;
+                            }
+
+                            if (found == true){
+                                Web.xPath.click(driver, "/html/body/form/table/tbody/tr[2]/td[2]/section/table[2]/tbody/tr/td/div/table/tbody/tr[" + (count-1) + "]/td[1]/input\n");
+
+                                Web.xPath.click(driver, "/html/body/form/table/tbody/tr[2]/td[1]/div/ul/li[4]/a\n");
+
+                                try{
+                                    current.setPin(Web.ID.getText(driver, "MainContent_txtParcelNumber"));
+                                    current.setTaxCode(Web.ID.getTextFast(driver, "MainContent_txtTaxingCode"));
+                                    current.setPropertyType(Web.ID.getTextFast(driver, "MainContent_txtPropertyClass"));
+
+                                    Web.xPath.click(driver, "/html/body/form/table/tbody/tr[3]/td[1]/ul/li[5]/a\n");
+
+                                    current.setLandValue(Web.xPath.getText(driver, "/html/body/form/table/tbody/tr[3]/td[2]/section/table[3]/tbody/tr[3]/td/div/table/tbody/tr[2]/td[2]\n"));
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/table/tbody/tr[3]/td[2]/section/table[3]/tbody/tr[3]/td/div/table/tbody/tr[2]/td[3]\n"));
+
+                                    current.setConfirmedCity(city);
+                                    current.setConfirmedCounty("FAYETTE");
+                                    current.setReason("COUNTY CHECK");
+
+                                    if (current.isException()){
+                                        Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 75);
+                                        exceptions.offer(current.toStringArrayList());
+                                    }
+
+                                } catch (NoSuchElementException e){
+
+                                }
+                            }
+
+                        } else {
+                            //no result
+                        }
+
+                        driver.get(url);
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                        e.printStackTrace();
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:FAYETTE" + "\n" + "\nYour county check progress should have been saved");
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+            }
         }
     }
 
