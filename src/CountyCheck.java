@@ -71,6 +71,15 @@ public class CountyCheck {
                 case "ST CLAIR":
                     CountyCheck.Illinois.StClair.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                     break;
+//                case "MADISON":
+//                    CountyCheck.Illinois.Madison.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "KANKAKEE":
+//                    CountyCheck.Illinois.Kankakee.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "BOONE":
+//                    CountyCheck.Illinois.Boone.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
                 default:
                     JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
                     break;
@@ -773,6 +782,26 @@ public class CountyCheck {
                 driver.close();
                 JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
             }
+        }
+
+        public class Madison{
+
+            private static final String url = "http://reweb1.co.madison.il.us/";
+            private static final int implicitWait = 5;
+            private Madison(){}
+        }
+
+        public class Kankakee{
+
+            private static final String url = "http://treasurer.k3county.net/";
+            private static final int implicitWait = 5;
+            private Kankakee(){}
+        }
+
+        public class Boone{
+            private static final String url = "https://booneil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Boone(){}
         }
     }
 
