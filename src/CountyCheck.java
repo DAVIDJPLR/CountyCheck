@@ -94,12 +94,38 @@ public class CountyCheck {
                 case "MCLEAN":
                     CountyCheck.Illinois.Mclean.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                     break;
+//                case "ROCK ISLAND":
+//                    CountyCheck.Illinois.RockIsland.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "DEKALB":
+//                    CountyCheck.Illinois.Dekalb.countyCheck(sourceFileName, resultFileName,city, currentFrame);
+//                    break;
+//                case "VERMILION":
+//                    CountyCheck.Illinois.Vermilion.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "LIVINGSTON":
+//                    CountyCheck.Illinois.Livingston.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "PEORIA":
+//                    CountyCheck.Illinois.Peoria.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
 //                case "MASSAC":
 //                    CountyCheck.Illinois.Massac.countyCheck(sourceFileName, resultFileName, city, currentFrame);
 //                    break;
                 case "FAYETTE":
                     CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                     break;
+//                case "WILLIAMSON":
+//                    CountyCheck.Illinois.Williamson.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "WHITE":
+//                    CountyCheck.Illinois.White.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "MACON":
+//                    CountyCheck.Illinois.Macon.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    break;
+//                case "BUREAU":
+//                    CountyCheck.Illinois.Bureau.countyCheck(sourceFileName, resultFileName, city, currentFrame);
                 default:
                     JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
                     break;
@@ -1575,6 +1601,36 @@ public class CountyCheck {
             }
         }
 
+        public class RockIsland{
+            private static final String url = "https://rockislandil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private RockIsland(){}
+        }
+
+        public class Dekalb{
+            private static final String url = "https://dekalbil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Dekalb(){}
+        }
+
+        public class Vermilion{
+            private static final String url = "https://vermilionil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Vermilion(){}
+        }
+
+        public class Livingston{
+            private static final String url = "https://livingstonil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Livingston(){}
+        }
+
+        public class Peoria{
+            private static final String url = "http://propertytax.peoriacounty.org/";
+            private static final int implicitWait = 5;
+            private Peoria(){}
+        }
+
         public class Massac{
             private static final String url = "https://massac.il.bhamaps.com/";
             private static final int implicitWait = 10;
@@ -1688,6 +1744,30 @@ public class CountyCheck {
                 driver.close();
                 JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
             }
+        }
+
+        public class Williamson{
+            private static final String url = "https://williamson.il.bhamaps.com/";
+            private static final int implicitWait = 5;
+            private Williamson(){}
+        }
+
+        public class White{
+            private static final String url = "https://portico.mygisonline.com/html5/?viewer=whiteil";
+            private static final int implicitWait = 5;
+            private White(){}
+        }
+
+        public class Macon{
+            private static final String url = "https://maconcounty.maps.arcgis.com/apps/webappviewer/index.html?id=7b07a313cf5d40f78bb982e1b8811ce2";
+            private static final int implicitWait = 5;
+            private Macon(){}
+        }
+
+        public class Bureau{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Bureau(){}
         }
     }
 
