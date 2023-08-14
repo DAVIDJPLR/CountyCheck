@@ -12,11 +12,11 @@ import java.util.*;
 public class CountyCheck {
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS"}));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"WILL"}));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"CHAMPAIGN", "GRUNDY", "HENRY", "KANE", "KENDALL", "LASALLE", "WILL"}));
 
     private CountyCheck(){}
 
-    public static void countyCheck (String sourceFileName, String resultFileName, String state, String county, String city, JPanel currentFrame){
+    public static void countyCheck (String sourceFileName, String resultFileName, String state, String county, String city){
 
         state = state.toUpperCase();
         county = county.toUpperCase();
@@ -24,10 +24,12 @@ public class CountyCheck {
 
         switch (state){
             case "ILLINOIS":
-                CountyCheck.Illinois.countyCheck(sourceFileName, resultFileName, county, city, currentFrame);
+                CountyCheck.Illinois.countyCheck(sourceFileName, resultFileName, county, city);
                 break;
             default:
-                JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + state);
+                /**
+                 * ToDo: Add JavaFX alert
+                 */
                 break;
         }
     }
@@ -48,14 +50,16 @@ public class CountyCheck {
 
         private California(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame) {
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city) {
 
             switch (county) {
 //                case "SAN BERNARDINO":
-//                    CountyCheck.California.SanBernardino.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.California.SanBernardino.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, California");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -72,159 +76,161 @@ public class CountyCheck {
 
         private Illinois(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
 
             switch (county){
                 /**
                  * Start of DevNet
                  */
 //                case "ADAMS":
-//                    CountyCheck.Illinois.Adams.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Adams.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "BOND":
-//                    CountyCheck.Illinois.Bond.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Bond.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "BOONE":
-                    CountyCheck.Illinois.Boone.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Boone.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "CARROLL":
-//                    CountyCheck.Illinois.Carroll.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Carroll.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "CHAMPAIGN":
-                    CountyCheck.Illinois.Champaign.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Champaign.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "CUMBERLAND":
-//                    CountyCheck.Illinois.Cumberland.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Cumberland.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "DEKALB":
-                    CountyCheck.Illinois.Dekalb.countyCheck(sourceFileName, resultFileName,city, currentFrame);
+                    CountyCheck.Illinois.Dekalb.countyCheck(sourceFileName, resultFileName,city);
                     break;
 //                case "DOUGLAS":
-//                    CountyCheck.Illinois.Douglas.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Douglas.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "FRANKLIN":
-//                    CountyCheck.Illinois.Franklin.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Franklin.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "GRUNDY":
-                    CountyCheck.Illinois.Grundy.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Grundy.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "HENRY":
-                    CountyCheck.Illinois.Henry.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Henry.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "JODAVIESS":
-//                    CountyCheck.Illinois.JoDaviess.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.JoDaviess.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "KANE":
-                    CountyCheck.Illinois.Kane.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Kane.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "KANKAKEE":
-                    CountyCheck.Illinois.Kankakee.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Kankakee.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "KENDALL":
-                    CountyCheck.Illinois.Kendall.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Kendall.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "LIVINGSTON":
-                    CountyCheck.Illinois.Livingston.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Livingston.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "MADISON":
-                    CountyCheck.Illinois.Madison.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Madison.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "MARION":
-                    CountyCheck.Illinois.Marion.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Marion.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "MCDONOUGH":
-//                    CountyCheck.Illinois.Mcdonough.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Mcdonough.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "MCHENRY":
-//                    CountyCheck.Illinois.Mchenry.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Mchenry.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "MCLEAN":
-                    CountyCheck.Illinois.Mclean.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Mclean.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "OGLE":
-//                    CountyCheck.Illinois.Ogle.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Ogle.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "PEORIA":
-                    CountyCheck.Illinois.Peoria.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Peoria.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "PERRY":
-//                    CountyCheck.Illinois.Perry.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Perry.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "RANDOLPH":
-//                    CountyCheck.Illinois.Randolph.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Randolph.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "ROCK ISLAND":
-                    CountyCheck.Illinois.RockIsland.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.RockIsland.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "SALINE":
-//                    CountyCheck.Illinois.Saline.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Saline.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "ST CLAIR":
-                    CountyCheck.Illinois.StClair.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.StClair.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "STEPHENSON":
-//                    CountyCheck.Illinois.Stephenson.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Stephenson.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "TAZEWELL":
-//                    CountyCheck.Illinois.Tazewell.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Tazewell.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "VERMILION":
-                    CountyCheck.Illinois.Vermilion.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Vermilion.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "WASHINGTON":
-//                    CountyCheck.Illinois.Washington.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Washington.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "WHITESIDE":
-//                    CountyCheck.Illinois.Whiteside.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Whiteside.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 /**
                  * End of DevNet
                  */
 
 //                case "BUREAU":
-//                    CountyCheck.Illinois.Bureau.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Bureau.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "CHRISTIAN":
-//                    CountyCheck.Illinois.Christian.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Christian.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "CLINTON":
-//                    CountyCheck.Illinois.Clinton.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Clinton.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "FAYETTE":
-                    CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "LAKE":
-                    CountyCheck.Illinois.Lake.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Lake.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 case "LASALLE":
-                    CountyCheck.Illinois.Lasalle.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Lasalle.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "MACON":
-//                    CountyCheck.Illinois.Macon.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Macon.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "MASSAC":
-//                    CountyCheck.Illinois.Massac.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Massac.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "SANGAMON":
-//                    CountyCheck.Illinois.Sangamon.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Sangamon.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "SHELBY":
-//                    CountyCheck.Illinois.Shelby.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Shelby.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "WHITE":
-//                    CountyCheck.Illinois.White.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.White.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 case "WILL":
-                    CountyCheck.Illinois.Will.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+                    CountyCheck.Illinois.Will.countyCheck(sourceFileName, resultFileName, city);
                     break;
 //                case "WILLIAMSON":
-//                    CountyCheck.Illinois.Williamson.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Williamson.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "WINNEBAGO":
-//                    CountyCheck.Illinois.Winnebago.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Illinois.Winnebago.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Illinois");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -249,13 +255,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Boone(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -343,14 +349,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:BOONE" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -365,13 +375,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Champaign(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -458,14 +468,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:CHAMPAIGN" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -480,13 +494,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Dekalb(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -579,14 +593,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:DEKALB" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -608,13 +626,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Grundy(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -702,14 +720,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:GRUNDY" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -718,13 +740,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Henry(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -812,14 +834,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:HENRY" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -836,13 +862,13 @@ public class CountyCheck {
 
             private Kane(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -929,14 +955,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:KANE" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -946,13 +976,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Kankakee(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1040,14 +1070,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:KANKAKEE" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1057,13 +1091,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Kendall(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1151,14 +1185,18 @@ public class CountyCheck {
                        undecideds.offer(current.toStringArrayList());
                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
                        Excel.write(resultFileName, collectionConvert(exceptions), header);
-                       JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:Kendall" + "\n" + "\nYour county check progress should have been saved");
+                       /**
+                        * ToDo: Add JavaFX Alert
+                        */
                        return;
                    }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1167,13 +1205,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Livingston(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1261,14 +1299,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:LIVINGSTON" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1278,13 +1320,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Madison(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1372,14 +1414,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:MADISON" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1388,13 +1434,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Marion(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1482,14 +1528,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:MARION" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1510,13 +1560,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Mclean(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1604,14 +1654,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:MCLEAN" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1626,13 +1680,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Peoria(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1719,14 +1773,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:PEORIA" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1747,13 +1805,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private RockIsland(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1840,14 +1898,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:ROCKISLAND" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1863,13 +1925,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private StClair(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -1957,14 +2019,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:ST CLAIR" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -1985,13 +2051,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Vermilion(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -2079,14 +2145,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:VERMILION" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -2129,13 +2199,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Fayette(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -2222,14 +2292,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:FAYETTE" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -2240,13 +2314,13 @@ public class CountyCheck {
 
             private Lake(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -2337,14 +2411,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame,"An error has occurred while county checking " + current.toString() + "\nError: Selenium:Lake" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -2354,13 +2432,13 @@ public class CountyCheck {
             private static final int implicitWait = 5;
             private Lasalle(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame){
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = screenShotPath(resultFileName, currentFrame);
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName, currentFrame);
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
@@ -2423,14 +2501,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame, "An error has occurred while county checking " + current.toString() + "\nError: Selenium:LaSalle" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -2471,11 +2553,11 @@ public class CountyCheck {
 
             private Will(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city, JPanel currentFrame) {
+            public static void countyCheck (String sourceFileName, String resultFileName, String city) {
 
                 String screenshotPath = resultFileName.split("\\.")[0] + "_SCREENSHOTS.";
                 if (!(Files.isDirectory(Paths.get(screenshotPath)))){
-                    createFolder(screenshotPath, currentFrame);
+                    createFolder(screenshotPath);
                 }
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
@@ -2548,14 +2630,18 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        JOptionPane.showMessageDialog(currentFrame,"An error has occurred while county checking " + current.toString() + "\nError: Selenium:Will" + "\n" + "\nYour county check progress should have been saved");
+                        /**
+                         * ToDo: Add JavaFX Alert
+                         */
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                JOptionPane.showMessageDialog(currentFrame, "County Check completed. " + exceptions.size() + " exceptions were found.");
+                /**
+                 * ToDo: Add JavaFX Alert
+                 */
             }
         }
 
@@ -2576,13 +2662,15 @@ public class CountyCheck {
 
         private Michigan(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
 //                case "OAKLAND":
-//                    CountyCheck.Michigan.Oakland.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Michigan.Oakland.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Michigan");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -2599,19 +2687,21 @@ public class CountyCheck {
 
         private Missouri(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
 //                case "MISSISSIPPI":
-//                    CountyCheck.Missouri.Mississippi.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Missouri.Mississippi.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "ST FRANCOIS":
-//                    CountyCheck.Missouri.Stfrancois.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Missouri.Stfrancois.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "ST LOUIS":
-//                    CountyCheck.Missouri.Stlouis.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Missouri.Stlouis.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Missouri");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -2640,13 +2730,15 @@ public class CountyCheck {
 
         private Oklahoma(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
 //                case "GARFIELD":
-//                    CountyCheck.Oklahoma.Garfield.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Oklahoma.Garfield.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Oklahoma");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -2663,13 +2755,15 @@ public class CountyCheck {
 
         private Oregon(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
 //                case "COOS":
-//                    CountyCheck.Oregon.Coos.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Oregon.Coos.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Oregon");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -2686,19 +2780,21 @@ public class CountyCheck {
 
         private Texas(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
 //                case "BRAZORIA":
-//                    CountyCheck.Texas.Brazoria.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Texas.Brazoria.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "LIBERTY":
-//                    CountyCheck.Texas.Liberty.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Texas.Liberty.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "MCLENNAN":
-//                    CountyCheck.Texas.Mclennan.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Texas.Mclennan.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Texas");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -2727,13 +2823,15 @@ public class CountyCheck {
 
         private Washington(){}
 
-        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city, JPanel currentFrame){
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
 //                case "WALLA WALLA":
-//                    CountyCheck.Washington.WallaWalla.countyCheck(sourceFileName, resultFileName, city, currentFrame);
+//                    CountyCheck.Washington.WallaWalla.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    JOptionPane.showMessageDialog(currentFrame, "There is currently no support for " + county + " county, Washington");
+                    /**
+                     * ToDo: Add JavaFX Alert
+                     */
                     break;
             }
         }
@@ -2754,24 +2852,26 @@ public class CountyCheck {
         return out;
     }
 
-    public static void createFolder(String folderPath, JPanel currentFrame){
+    public static void createFolder(String folderPath){
         File temp = new File(folderPath);
         boolean test = temp.mkdir();
         if (!test) {
-            JOptionPane.showMessageDialog(currentFrame, "Folder: '" + folderPath + "' could not be created");
+            /**
+             * ToDo: Add JavaFX Alert
+             */
         }
     }
 
-    public static String screenShotPath(String resultFileName, JPanel currentFrame){
+    public static String screenShotPath(String resultFileName){
         String screenshotPath = resultFileName.split("\\.")[0] + "_SCREENSHOTS.";
         if (!(Files.isDirectory(Paths.get(screenshotPath)))){
-            createFolder(screenshotPath, currentFrame);
+            createFolder(screenshotPath);
         }
 
         return screenshotPath;
     }
 
-    public static Queue<ArrayList<String>> readUndecideds(String sourceFileName, JPanel currentFrame){
+    public static Queue<ArrayList<String>> readUndecideds(String sourceFileName){
 
         Queue<ArrayList<String>> undecideds = Excel.read(sourceFileName);
         try {
@@ -2779,7 +2879,9 @@ public class CountyCheck {
                 throw new Exception("No undecided addresses were found");
             }
         } catch (Exception e){
-            JOptionPane.showMessageDialog(currentFrame, "No undecided addresses were found");
+            /**
+             * ToDo: Add JavaFX Alert
+             */
             return null;
         }
         undecideds.poll();
