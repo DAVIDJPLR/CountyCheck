@@ -1,3 +1,8 @@
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -9,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class CountyCheck {
+public class CountyCheck{
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS"}));
     public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"CHAMPAIGN", "GRUNDY", "HENRY", "KANE", "KENDALL", "LASALLE", "WILL"}));
@@ -27,9 +32,7 @@ public class CountyCheck {
                 CountyCheck.Illinois.countyCheck(sourceFileName, resultFileName, county, city);
                 break;
             default:
-                /**
-                 * ToDo: Add JavaFX alert
-                 */
+                noState(state);
                 break;
         }
     }
@@ -57,9 +60,7 @@ public class CountyCheck {
 //                    CountyCheck.California.SanBernardino.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("CALIFORNIA", county);
                     break;
             }
         }
@@ -228,9 +229,7 @@ public class CountyCheck {
 //                    CountyCheck.Illinois.Winnebago.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("ILLINOIS", county);
                     break;
             }
         }
@@ -344,23 +343,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "BOONE");
             }
         }
 
@@ -463,23 +456,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "CHAMPAIGN");
             }
         }
 
@@ -588,23 +575,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "DEKALB");
             }
         }
 
@@ -715,23 +696,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "GRUNDY");
             }
         }
 
@@ -829,23 +804,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "HENRY");
             }
         }
 
@@ -950,23 +919,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "Kane");
             }
         }
 
@@ -1065,23 +1028,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "KANKAKEE");
             }
         }
 
@@ -1180,23 +1137,17 @@ public class CountyCheck {
                        }
                        driver.get(url);
                    } catch (Exception e){
-                       System.out.println(e.getMessage());
-                       e.printStackTrace();
                        undecideds.offer(current.toStringArrayList());
                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
                        Excel.write(resultFileName, collectionConvert(exceptions), header);
-                       /**
-                        * ToDo: Add JavaFX Alert
-                        */
+                       problem(e.getMessage());
                        return;
                    }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "KENDALL");
             }
         }
 
@@ -1294,23 +1245,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "LIVINGSTON");
             }
         }
 
@@ -1409,23 +1354,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "MADISON");
             }
         }
 
@@ -1523,23 +1462,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "MARION");
             }
         }
 
@@ -1649,23 +1582,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "MCLEAN");
             }
         }
 
@@ -1768,23 +1695,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "PEORIA");
             }
         }
 
@@ -1893,23 +1814,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "ROCK ISLAND");
             }
         }
 
@@ -2014,23 +1929,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "ST CLAIR");
             }
         }
 
@@ -2140,23 +2049,17 @@ public class CountyCheck {
                         }
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "VERMILION");
             }
         }
 
@@ -2287,23 +2190,17 @@ public class CountyCheck {
 
                         driver.get(url);
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "FAYETTE");
             }
         }
 
@@ -2411,18 +2308,14 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "LAKE");
             }
         }
 
@@ -2501,18 +2394,14 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "LASALLE");
             }
         }
 
@@ -2630,18 +2519,14 @@ public class CountyCheck {
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
-                        /**
-                         * ToDo: Add JavaFX Alert
-                         */
+                        problem(e.getMessage());
                         return;
                     }
                 }
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                /**
-                 * ToDo: Add JavaFX Alert
-                 */
+                done(exceptions.size(), "ILLINOIS", "WILL");
             }
         }
 
@@ -2668,9 +2553,7 @@ public class CountyCheck {
 //                    CountyCheck.Michigan.Oakland.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("MICHIGAN", county);
                     break;
             }
         }
@@ -2699,9 +2582,7 @@ public class CountyCheck {
 //                    CountyCheck.Missouri.Stlouis.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("MISSOURI", county);
                     break;
             }
         }
@@ -2736,9 +2617,7 @@ public class CountyCheck {
 //                    CountyCheck.Oklahoma.Garfield.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("OKLAHOMA", county);
                     break;
             }
         }
@@ -2761,9 +2640,7 @@ public class CountyCheck {
 //                    CountyCheck.Oregon.Coos.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("OREGON", county);
                     break;
             }
         }
@@ -2792,9 +2669,7 @@ public class CountyCheck {
 //                    CountyCheck.Texas.Mclennan.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("TEXAS", county);
                     break;
             }
         }
@@ -2829,9 +2704,7 @@ public class CountyCheck {
 //                    CountyCheck.Washington.WallaWalla.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
-                    /**
-                     * ToDo: Add JavaFX Alert
-                     */
+                    noCounty("WASHINGTON", county);
                     break;
             }
         }
@@ -2856,9 +2729,7 @@ public class CountyCheck {
         File temp = new File(folderPath);
         boolean test = temp.mkdir();
         if (!test) {
-            /**
-             * ToDo: Add JavaFX Alert
-             */
+            problem("Unable to create folder: " + folderPath);
         }
     }
 
@@ -2879,9 +2750,7 @@ public class CountyCheck {
                 throw new Exception("No undecided addresses were found");
             }
         } catch (Exception e){
-            /**
-             * ToDo: Add JavaFX Alert
-             */
+            problem(e.getMessage());
             return null;
         }
         undecideds.poll();
@@ -2898,6 +2767,46 @@ public class CountyCheck {
         }
 
         return exceptions;
+    }
+
+    public static void done(int exceptions, String state, String county){
+        Alert countyError = new Alert(Alert.AlertType.INFORMATION);
+        countyError.setTitle(county + ", " + state + "county check complete");
+        countyError.setHeaderText(exceptions + " exceptions found!");
+        countyError.getButtonTypes().remove(0);
+        countyError.getButtonTypes().add(ButtonType.OK);
+        countyError.showAndWait();
+    }
+
+    public static void noCounty (String state, String county){
+        Alert countyError = new Alert(Alert.AlertType.WARNING);
+        countyError.setTitle("County not yet supported");
+        countyError.setHeaderText(county + ", " + state + " is not yet supported by County Checker");
+        countyError.getButtonTypes().remove(0);
+        countyError.getButtonTypes().add(ButtonType.OK);
+        countyError.showAndWait();
+    }
+
+    public static void noState (String state){
+        Alert stateError = new Alert(Alert.AlertType.WARNING);
+        stateError.setTitle("State not yet supported");
+        stateError.setHeaderText(state + " is not yet supported by County Checker");
+        stateError.getButtonTypes().remove(0);
+        stateError.getButtonTypes().add(ButtonType.OK);
+        stateError.showAndWait();
+    }
+
+    public static void problem (String error){
+        Alert problemError = new Alert(Alert.AlertType.ERROR);
+        problemError.setTitle("An error has occurred");
+        problemError.setHeaderText("An error has occurred");
+        Text message = new Text("Error message: \n" + error);
+        message.setWrappingWidth(1000);
+        problemError.getDialogPane().setContent(message);
+        problemError.getButtonTypes().remove(0);
+        problemError.getButtonTypes().add(ButtonType.OK);
+        //problemError.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        problemError.showAndWait();
     }
 
 }

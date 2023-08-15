@@ -1,7 +1,17 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import javax.swing.*;
 
-public class test {
+public class test extends Application {
     public static void main(String[] args) {
-        CountyCheck.countyCheck("test.xls", "results.xls", "ILLINOIS", "KANE", "HAMPSHIRE", new JPanel());
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        System.out.println("test");
+        CountyCheck.problem("HMMM");
+        System.out.println("test");
     }
 }
