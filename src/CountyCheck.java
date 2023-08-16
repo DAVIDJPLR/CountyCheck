@@ -19,7 +19,7 @@ import java.util.*;
 public class CountyCheck{
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS", "TEXAS"}));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"CHAMPAIGN", "GRUNDY", "HENRY", "KANE", "KENDALL", "LASALLE", "WILL"}));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"BOONE", "CHAMPAIGN", "DEKALB", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"}));
     public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList(new String[]{"BRAZORIA"}));
 
     private CountyCheck(){}
@@ -47,10 +47,22 @@ public class CountyCheck{
         state = state.toUpperCase();
 
         switch (state){
+//            case "CALIFORNIA":
+//                return CALIFORNIA;
             case "ILLINOIS":
                 return ILLINOIS;
+//            case "MICHIGAN":
+//                return MICHIGAN;
+//            case "MISSOURI":
+//                return MISSOURI;
+//            case "OKLAHOMA":
+//                return OKLAHOMA;
+//            case "OREGON":
+//                return OREGON;
             case "TEXAS":
                 return TEXAS;
+//            case "WASHINGTON":
+//                return WASHINGTON;
             default:
                 return null;
         }
