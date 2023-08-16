@@ -3,6 +3,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
+import org.apache.poi.ss.formula.functions.Count;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -12,12 +13,14 @@ import javax.swing.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Year;
 import java.util.*;
 
 public class CountyCheck{
 
-    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS"}));
+    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS", "TEXAS"}));
     public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"CHAMPAIGN", "GRUNDY", "HENRY", "KANE", "KENDALL", "LASALLE", "WILL"}));
+    public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList(new String[]{"BRAZORIA"}));
 
     private CountyCheck(){}
 
@@ -31,6 +34,8 @@ public class CountyCheck{
             case "ILLINOIS":
                 CountyCheck.Illinois.countyCheck(sourceFileName, resultFileName, county, city);
                 break;
+            case "TEXAS":
+                CountyCheck.Texas.countyCheck(sourceFileName, resultFileName, county, city);
             default:
                 noState(state);
                 break;
@@ -44,6 +49,8 @@ public class CountyCheck{
         switch (state){
             case "ILLINOIS":
                 return ILLINOIS;
+            case "TEXAS":
+                return TEXAS;
             default:
                 return null;
         }
@@ -2659,9 +2666,9 @@ public class CountyCheck{
 
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
-//                case "BRAZORIA":
-//                    CountyCheck.Texas.Brazoria.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "BRAZORIA":
+                    CountyCheck.Texas.Brazoria.countyCheck(sourceFileName, resultFileName, city);
+                    break;
 //                case "LIBERTY":
 //                    CountyCheck.Texas.Liberty.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
@@ -2678,6 +2685,102 @@ public class CountyCheck{
             private static final String url = "https://propaccess.trueautomation.com/clientdb/propertysearch.aspx?cid=51";
             private static final int implicitWait = 5;
             private Brazoria(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+                        Web.ID.click(driver, "propertySearchOptions_advanced");
+
+                        Web.ID.type(driver, "propertySearchOptions_streetNumber", current.getNumber());
+
+                        Web.ID.type(driver, "propertySearchOptions_streetName", current.getName());
+
+                        String prevYear = String.valueOf((Year.now().getValue())-1);
+                        Web.ID.type(driver, "propertySearchOptions_taxyear", prevYear);
+                        Web.hitEnter(driver);
+
+                        Web.ID.click(driver, "propertySearchOptions_searchAdv");
+
+                        System.out.println(Web.ID.getText(driver, "propertySearchResults_pageHeading"));
+                        if (Web.ID.getText(driver, "propertySearchResults_pageHeading").equalsIgnoreCase("None found.")){
+                            //no result
+                            driver.get(url);
+                        } else {
+                            //result
+                            try{
+                                int res = 0;
+                                boolean found = false;
+                                while (found == false){
+                                    System.out.println(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)));
+                                    if ((Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(current.getNumber()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(current.getName()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(city))){
+                                        //result
+                                        found = true;
+                                    }
+                                    res += 1;
+                                }
+                                if (found == true) {
+                                    //get info
+                                    Web.xPath.click(driver, ("/html/body/form/div[3]/div[2]/table/tbody/tr[" + (res + 1) + "]/td[10]/a\n"));
+                                    //expand all
+                                    Web.xPath.click(driver, "/html/body/form/div/div[5]/div[1]/span/input\n");
+
+                                    current.setPin(Web.xPath.getText(driver, "/html/body/form/div/div[5]/div[3]/table/tbody/tr[2]/td[2]\n"));
+                                    current.setPropertyType("RESIDENTIAL");
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/div/div[5]/div[5]/table/tbody/tr[2]/td[3]\n"));
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/div/div[5]/div[5]/table/tbody/tr[4]/td[3]\n"));
+                                    current.setConfirmedCounty("BRAZORIA");
+                                    current.setConfirmedCity(city);
+                                    current.setTaxCode(city);
+                                    current.setReason("COUNTY CHECK");
+
+                                    System.out.println(current.isException());
+
+                                    if (current.isException()) {
+                                        Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 67);
+                                        exceptions.offer(current.toStringArrayList());
+                                    }
+                                    driver.get(url);
+
+                                } else{
+                                    //no info
+                                    driver.get(url);
+                                }
+
+                            } catch (Exception e){
+                                //no result
+                                driver.get(url);
+                            }
+                        }
+
+
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "TEXAS", "BRAZORIA");
+            }
         }
 
         public class Liberty{
