@@ -18,9 +18,10 @@ import java.util.*;
 
 public class CountyCheck{
 
-    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS", "TEXAS"}));
+    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS", "TEXAS", "WASHINGTON"}));
     public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"BOONE", "CHAMPAIGN", "DEKALB", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"}));
     public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList(new String[]{"BRAZORIA"}));
+    public static final ArrayList<String> WASHINGTON = new ArrayList(Arrays.asList(new String[]{"WALLA WALLA"}));
 
     private CountyCheck(){}
 
@@ -36,6 +37,10 @@ public class CountyCheck{
                 break;
             case "TEXAS":
                 CountyCheck.Texas.countyCheck(sourceFileName, resultFileName, county, city);
+                break;
+            case "WASHINGTON":
+                CountyCheck.Washington.countyCheck(sourceFileName, resultFileName, county, city);
+                break;
             default:
                 noState(state);
                 break;
@@ -61,8 +66,8 @@ public class CountyCheck{
 //                return OREGON;
             case "TEXAS":
                 return TEXAS;
-//            case "WASHINGTON":
-//                return WASHINGTON;
+            case "WASHINGTON":
+                return WASHINGTON;
             default:
                 return null;
         }
@@ -2461,41 +2466,25 @@ public class CountyCheck{
 
             private Will(){}
 
-            public static void countyCheck (String sourceFileName, String resultFileName, String city) {
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
 
-                String screenshotPath = resultFileName.split("\\.")[0] + "_SCREENSHOTS.";
-                if (!(Files.isDirectory(Paths.get(screenshotPath)))){
-                    createFolder(screenshotPath);
-                }
+                String screenshotPath = screenShotPath(resultFileName);
 
                 ArrayList<String> header = (new Address()).toStringArrayList();
 
-                Queue<ArrayList<String>> undecideds = Excel.read(sourceFileName);
-                try {
-                    if (undecideds == null) {
-                        throw new Exception("No undecided addresses were found");
-                    }
-                } catch (Exception e){
-                    JOptionPane.showMessageDialog(new JPanel(), "No undecided addresses were found");
-                    return;
-                }
-                undecideds.poll();
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
 
-                Queue<ArrayList<String>> exceptions = new LinkedList<>();
-
-                if (Files.isRegularFile(Paths.get(resultFileName))) {
-                    exceptions = Excel.read(resultFileName);
-                    exceptions.poll();
-                }
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
-
                 driver.get(url);
 
                 while (!(undecideds.peek() == null)){
-                    System.out.println("Still Going");
                     Address current = new Address(undecideds.poll());
-                    try {
+
+                    try{
+
                         Web.ID.click(driver, "reset123");
 
                         Web.ID.type(driver, "mStrnumS", current.getNumber());
@@ -2506,35 +2495,69 @@ public class CountyCheck{
 
                         Web.ID.click(driver, "img1");
 
-                        if ((Web.xPath.getText(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[2]/td\n")).equalsIgnoreCase("NO RESULTS FOUND")) {
-                            //No Result
-                            Web.xPath.click(driver, "/html/body/div[1]/div[2]/ul/li[3]/a\n");
-                        } else {
-                            //Result
-                            Web.xPath.click(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[2]/td[1]/a\n");
+                        boolean exist = true;
 
-                            Web.toWindow(driver, 1);
-
-                            current.setPin(Web.ID.getText(driver, "FormView1_pinLabel"));
-                            current.setPropertyType(Web.ID.getTextFast(driver, "FormView1_DetailsView9"));
-                            current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/span/div[1]/table/tbody/tr/td/table[11]/tbody/tr[1]/td/span/div/table/tbody/tr[2]/td[4]\n"));
-                            current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/span/div[1]/table/tbody/tr/td/table[11]/tbody/tr[1]/td/span/div/table/tbody/tr[2]/td[6]\n"));
-                            current.setTaxCode(city.toUpperCase());
-                            current.setConfirmedCounty("WILL");
-                            current.setConfirmedCity(city.toUpperCase());
-                            current.setReason("COUNTY CHECK");
-
-                            if (current.isException()){
-                                //is Exception
-                                Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 50);
-                                exceptions.offer(current.toStringArrayList());
+                        if (Web.xPath.exists(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[2]/td\n")){
+                            if (Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[2]/td\n").equalsIgnoreCase("NO RESULT FOUND")){
+                                exist = false;
                             }
-                            driver.close();
-                            Web.toWindow(driver, 0);
-                            Web.xPath.click(driver, "/html/body/div[1]/div[2]/ul/li[3]/a\n");
-
                         }
+
+                        if (!exist){
+                            //No Result Found
+                            driver.get(url);
+                        } else {
+                            //Result Found
+                            boolean oneResult = false;
+                            boolean err = false;
+                            if (Web.xPath.exists(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[2]/td[2]\n")){
+                                oneResult = true;
+                            }
+                            if(oneResult){
+                                Web.xPath.click(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[2]/td[1]/a\n");
+                            } else {
+                                int count = 3;
+                                try {
+                                    boolean found = false;
+                                    while (!found){
+                                        List<String> res = Arrays.asList(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[" + count + "]/td[2]\n").split(" "));
+                                        if (res.contains(current.getNumber())){
+                                            if (res.contains(current.getName().toUpperCase())){
+                                                found = true;
+                                            }
+                                        }
+                                        count += 1;
+                                    }
+                                    Web.xPath.click(driver, "/html/body/div[2]/div[1]/div[1]/div/form/div[3]/div/div/div/font/span/div/table/tbody/tr[" + count + "]/td[1]/a\n");
+                                } catch (Exception e){
+                                    err = true;
+                                }
+                            }
+                            if (!err){
+                                Web.toWindow(driver, 1);
+                                current.setTaxCode(city);
+                                current.setConfirmedCounty("WILL");
+                                current.setConfirmedCity(city);
+                                current.setReason("COUNTY CHECK");
+                                current.setPin(Web.ID.getText(driver, "FormView1_pinLabel"));
+                                current.setPropertyType(Web.xPath.getTextFast(driver, "/html/body/form/span/div[1]/table/tbody/tr/td/table[6]/tbody/tr/td[1]/span/div[1]/table/tbody/tr/td[2]\n"));
+                                current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/span/div[1]/table/tbody/tr/td/table[11]/tbody/tr[1]/td/span/div/table/tbody/tr[2]/td[4]\n"));
+                                current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/span/div[1]/table/tbody/tr/td/table[11]/tbody/tr[1]/td/span/div/table/tbody/tr[2]/td[6]\n"));
+                               if (current.isException()){
+                                   Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 67);
+                                   current.setStatus("EXCEPTION");
+                                   exceptions.offer(current.toStringArrayList());
+                               }
+                                driver.close();
+                                Web.toWindow(driver, 0);
+                                driver.get(url);
+                            } else {
+                                driver.get(url);
+                            }
+                        }
+
                     } catch (Exception e){
+                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
@@ -2545,8 +2568,9 @@ public class CountyCheck{
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                done(exceptions.size(), "ILLINOIS", "WILL");
+                    done(exceptions.size(), "ILLINOIS", "WILL");
             }
+
         }
 
         public class Williamson{
@@ -2739,7 +2763,7 @@ public class CountyCheck{
                                 boolean found = false;
                                 while (found == false){
                                     System.out.println(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)));
-                                    if ((Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(current.getNumber()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(current.getName()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(city))){
+                                    if ((Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).split(" ")[0].equalsIgnoreCase(current.getNumber()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(current.getName()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(city))){
                                         //result
                                         found = true;
                                     }
@@ -2815,9 +2839,9 @@ public class CountyCheck{
 
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
-//                case "WALLA WALLA":
-//                    CountyCheck.Washington.WallaWalla.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "WALLA WALLA":
+                    CountyCheck.Washington.WallaWalla.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 default:
                     noCounty("WASHINGTON", county);
                     break;
@@ -2828,6 +2852,102 @@ public class CountyCheck{
             private static final String url = "https://propertysearch.co.walla-walla.wa.us/PropertyAccess/propertysearch.aspx?cid=0";
             private static final int implicitWait = 5;
             private WallaWalla(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+                        Web.ID.click(driver, "propertySearchOptions_advanced");
+
+                        Web.ID.type(driver, "propertySearchOptions_streetNumber", current.getNumber());
+
+                        Web.ID.type(driver, "propertySearchOptions_streetName", current.getName());
+
+                        String prevYear = String.valueOf((Year.now().getValue())-1);
+                        Web.ID.type(driver, "propertySearchOptions_taxyear", prevYear);
+                        Web.hitEnter(driver);
+
+                        Web.ID.click(driver, "propertySearchOptions_search");
+
+                        System.out.println(Web.ID.getText(driver, "propertySearchResults_pageHeading"));
+                        if (Web.ID.getText(driver, "propertySearchResults_pageHeading").equalsIgnoreCase("None found.")){
+                            //no result
+                            driver.get(url);
+                        } else {
+                            //result
+                            try{
+                                int res = 0;
+                                boolean found = false;
+                                while (found == false){
+                                    System.out.println(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)));
+                                    if ((Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).split(" ")[0].equalsIgnoreCase(current.getNumber()))&&(Web.ID.getTextFast(driver, ("propertySearchResults_address" + res)).contains(current.getName()))){
+                                        //result
+                                        found = true;
+                                    }
+                                    res += 1;
+                                }
+                                if (found == true) {
+                                    //get info
+                                    Web.xPath.click(driver, ("/html/body/form/div[5]/div[2]/table/tbody/tr[" + (res+1) + "]/td[11]/a\n"));
+                                    //expand all
+//                                    Web.xPath.click(driver, "/html/body/form/div/div[5]/div[1]/span/input\n");
+
+                                    current.setPin(Web.xPath.getText(driver, "/html/body/form/div[3]/div[5]/div[3]/table/tbody/tr[2]/td[2]\n"));
+                                    current.setPropertyType("RESIDENTIAL");
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/div[3]/div[5]/div[7]/table/tbody/tr[2]/td[3]\n"));
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/div[3]/div[5]/div[7]/table/tbody/tr[4]/td[3]\n"));
+                                    current.setConfirmedCounty("WALLA WALLA");
+                                    current.setConfirmedCity(city);
+                                    current.setTaxCode(city);
+                                    current.setReason("COUNTY CHECK");
+
+                                    System.out.println(current.isException());
+
+                                    if (current.isException()) {
+                                        Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 33);
+                                        exceptions.offer(current.toStringArrayList());
+                                    }
+                                    driver.get(url);
+
+                                } else{
+                                    //no info
+                                    driver.get(url);
+                                }
+
+                            } catch (Exception e){
+                                //no result
+                                driver.get(url);
+                            }
+                        }
+
+
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "WASHINGTON", "WALLA WALLA");
+            }
         }
 
     }
