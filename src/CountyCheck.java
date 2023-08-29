@@ -56,6 +56,8 @@ public class CountyCheck{
 //                return CALIFORNIA;
             case "ILLINOIS":
                 return ILLINOIS;
+//            case "LOUISIANA":
+//                return LOUISIANA;
 //            case "MICHIGAN":
 //                return MICHIGAN;
 //            case "MISSOURI":
@@ -73,6 +75,29 @@ public class CountyCheck{
         }
     }
 
+    public class Alabama{
+
+        private Alabama(){}
+
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city) {
+
+            switch (county) {
+//                case "MONTGOMERY":
+//                    CountyCheck.Alabama.Montgomery.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+                default:
+                    noCounty("ALABAMA", county);
+                    break;
+            }
+        }
+
+        public class Montgomery{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Montgomery(){}
+        }
+    }
+
     public class California{
 
         private California(){}
@@ -80,8 +105,20 @@ public class CountyCheck{
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city) {
 
             switch (county) {
+//                case "LOS ANGELES":
+//                    CountyCheck.California.LosAngeles.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "ORANGE":
+//                    CountyCheck.California.Orange.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "RIVERSIDE":
+//                    CountyCheck.California.Riverside.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
 //                case "SAN BERNARDINO":
 //                    CountyCheck.California.SanBernardino.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "SANTA CLARA":
+//                    CountyCheck.California.SantaClara.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
                 default:
                     noCounty("CALIFORNIA", county);
@@ -89,10 +126,58 @@ public class CountyCheck{
             }
         }
 
+        public class LosAngeles{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private LosAngeles(){}
+        }
+
+        public class Orange{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Orange(){}
+        }
+
+        public class Riverside{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Riverside(){}
+        }
+
         public class SanBernardino{
             private static final String url = "https://arcpropertyinfo.sbcounty.gov/";
             private static final int implicitWait = 5;
             private SanBernardino(){}
+        }
+
+        public class SantaClara{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private SantaClara(){}
+        }
+
+    }
+
+    public class Colorado{
+
+        private Colorado(){}
+
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city) {
+
+            switch (county) {
+//                case "BOULDER":
+//                    CountyCheck.Colorado.Boulder.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+                default:
+                    noCounty("COLORADO", county);
+                    break;
+            }
+        }
+
+        public class Boulder{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Boulder(){}
         }
 
     }
@@ -152,6 +237,9 @@ public class CountyCheck{
                 case "KENDALL":
                     CountyCheck.Illinois.Kendall.countyCheck(sourceFileName, resultFileName, city);
                     break;
+//                case "KNOX":
+//                    CountyCheck.Illinois.Knox.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
                 case "LIVINGSTON":
                     CountyCheck.Illinois.Livingston.countyCheck(sourceFileName, resultFileName, city);
                     break;
@@ -1173,6 +1261,12 @@ public class CountyCheck{
                 driver.close();
                 done(exceptions.size(), "ILLINOIS", "KENDALL");
             }
+        }
+
+        public class Knox{
+            private static final String url = "https://knoxil.devnetwedge.com/";
+            private static final int implicitWait = 5;
+            private Knox(){}
         }
 
         public class Livingston{
@@ -2586,6 +2680,95 @@ public class CountyCheck{
         }
     }
 
+    public class Louisiana{
+
+        private Louisiana(){}
+
+        public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
+            switch (county){
+//                case "AVOYELLES":
+//                    CountyCheck.Louisiana.Avoyelles.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "EAST BATON ROUGE":
+//                    CountyCheck.Louisiana.EastBatonRouge.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "JEFFERSON":
+//                    CountyCheck.Louisiana.Jefferson.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "LAFAYETTE":
+//                    CountyCheck.Louisiana.Lafayette.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "LIVINGSTON":
+//                    CountyCheck.Louisiana.Livingston.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "ORLEANS":
+//                    CountyCheck.Louisiana.Orleans.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "ST LANDRY":
+//                    CountyCheck.Louisiana.StLandry.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "ST TAMMANY":
+//                    CountyCheck.Louisiana.StTammany.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+                default:
+                    noCounty("LOUISIANA", county);
+                    break;
+            }
+        }
+
+        public class Avoyelles{
+            private static final String url = "NO GO";
+            private static final int implicitWait = 5;
+            private Avoyelles(){}
+        }
+
+        public class EastBatonRouge{
+
+            //Assesssor could also maybe be "https://city.brla.gov/gis/propertylookup.asp"
+            private static final String url = "https://atlas.geoportalmaps.com/ebr";
+            private static final int implicitWait = 5;
+            private EastBatonRouge(){}
+        }
+
+        public class Jefferson{
+            private static final String url = "https://www.jpassessor.net/Parcel/Search?ParcelType=11";
+            private static final int implicitWait = 5;
+            private Jefferson(){}
+        }
+
+        public class Lafayette{
+            private static final String url = "https://portico.mygisonline.com/html5/?viewer=lafayettela";
+            private static final int implicitWait = 5;
+            private Lafayette(){}
+        }
+
+        public class Livingston{
+            private static final String url = "https://atlas.geoportalmaps.com/livingston";
+            private static final int implicitWait = 5;
+            private Livingston(){}
+        }
+
+        public class Orleans{
+            private static final String url = "https://beacon.schneidercorp.com/Application.aspx?AppID=979&LayerID=19792&PageTypeID=2&PageID=8661";
+            private static final int implicitWait = 5;
+            private Orleans(){}
+        }
+
+        public class StLandry{
+            private static final String url = "No Go";
+            private static final int implicitWait = 5;
+            private StLandry(){}
+        }
+
+        public class StTammany{
+
+            //Assessor could also maybe be "https://arist.stassessor.org/aristpwa/Search"
+            private static final String url = "https://atlas.geoportalmaps.com/st_tammany";
+            private static final int implicitWait = 5;
+            private StTammany(){}
+        }
+    }
+
     public class Michigan{
 
         private Michigan(){}
@@ -2615,8 +2798,20 @@ public class CountyCheck{
 
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
+//                case "ANDREW":
+//                    CountyCheck.Missouri.Andrew.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "CALLAWAY":
+//                    CountyCheck.Missouri.Callaway.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "COLE":
+//                    CountyCheck.Missouri.Cole.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
 //                case "MISSISSIPPI":
 //                    CountyCheck.Missouri.Mississippi.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "RAY":
+//                    CountyCheck.Missouri.Ray.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "ST FRANCOIS":
 //                    CountyCheck.Missouri.Stfrancois.countyCheck(sourceFileName, resultFileName, city);
@@ -2630,10 +2825,34 @@ public class CountyCheck{
             }
         }
 
+        public class Andrew{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Andrew(){}
+        }
+
+        public class Callaway{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Callaway(){}
+        }
+
+        public class Cole{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Cole(){}
+        }
+
         public class Mississippi{
             private static final String url = "";
             private static final int implicitWait = 5;
             private Mississippi(){}
+        }
+
+        public class Ray{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Ray(){}
         }
 
         public class Stfrancois{
@@ -2702,19 +2921,52 @@ public class CountyCheck{
 
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
+//                case "ATASCOSA":
+//                    CountyCheck.Texas.Atascosa.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "BOWIE":
+//                    CountyCheck.Texas.Bowie.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
                 case "BRAZORIA":
                     CountyCheck.Texas.Brazoria.countyCheck(sourceFileName, resultFileName, city);
                     break;
+//                case "DALLAS":
+//                    CountyCheck.Texas.Dallas.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "GALVESTON":
+//                    CountyCheck.Texas.Galveston.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "GRAYSON":
+//                    CountyCheck.Texas.Grayson.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
+//                case "HIDALGO":
+//                    CountyCheck.Texas.Hidalgo.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
 //                case "LIBERTY":
 //                    CountyCheck.Texas.Liberty.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
 //                case "MCLENNAN":
 //                    CountyCheck.Texas.Mclennan.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
+//                case "WILSON":
+//                    CountyCheck.Texas.Wilson.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
                 default:
                     noCounty("TEXAS", county);
                     break;
             }
+        }
+
+        public class Atascosa{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Atascosa(){}
+        }
+
+        public class Bowie{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Bowie(){}
         }
 
         public class Brazoria{
@@ -2819,6 +3071,30 @@ public class CountyCheck{
             }
         }
 
+        public class Dallas{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Dallas(){}
+        }
+
+        public class Galveston{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Galveston(){}
+        }
+
+        public class Grayson{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Grayson(){}
+        }
+
+        public class Hidalgo{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Hidalgo(){}
+        }
+
         public class Liberty{
             private static final String url = "https://esearch.libertycad.com/";
             private static final int implicitWait = 5;
@@ -2831,6 +3107,12 @@ public class CountyCheck{
             private Mclennan(){}
         }
 
+        public class Wilson{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private Wilson(){}
+        }
+
     }
 
     public class Washington{
@@ -2839,6 +3121,9 @@ public class CountyCheck{
 
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
+//                case "KING":
+//                    CountyCheck.Washington.kING.countyCheck(sourceFileName, resultFileName, city);
+//                    break;
                 case "WALLA WALLA":
                     CountyCheck.Washington.WallaWalla.countyCheck(sourceFileName, resultFileName, city);
                     break;
@@ -2846,6 +3131,12 @@ public class CountyCheck{
                     noCounty("WASHINGTON", county);
                     break;
             }
+        }
+
+        public class King{
+            private static final String url = "";
+            private static final int implicitWait = 5;
+            private King(){}
         }
 
         public class WallaWalla{
