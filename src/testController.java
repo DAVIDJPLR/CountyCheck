@@ -10,6 +10,6 @@ public class testController implements Initializable {
     }
 
     public void test(){
-        CountyCheck.Illinois.Will.countyCheck("joliet.xlsx", "Will_Joliet_Results.xlsx", "Joliet");
+        CountyCheck.Louisiana.EastBatonRouge.countyCheck("test.xlsx", "testresults.xlsx", "test");
     }
 }

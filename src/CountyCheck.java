@@ -2728,6 +2728,66 @@ public class CountyCheck{
             private static final String url = "https://atlas.geoportalmaps.com/ebr";
             private static final int implicitWait = 5;
             private EastBatonRouge(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                //Click ok on warning
+                Web.xPath.click(driver, "/html/body/div[27]/div[3]/div/button\n");
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+                        //Click on search
+                        Web.ID.carefulClick(driver, "showSearch");
+
+                        //Change criteria to street address
+                        Web.ID.type(driver, "queryDDL", "street address");
+
+                        //type street name
+                        //Web.ID.clearTextBox(driver, "3106");
+                        Web.ID.type(driver, "3106", current.getName());
+
+                        //type street number
+                        //Web.ID.clearTextBox(driver, "3107");
+                        Web.ID.type(driver, "3107", current.getNumber());
+
+                        //click search
+                        Web.ID.click(driver, "submit");
+
+                        if (Web.xPath.exists(driver, "//*[@id=\"closeSearchStatus\"]\n")){
+                            //No Results
+                            Web.ID.click(driver, "closeSearchStatus");
+                            System.out.println("no result");
+                        } else {
+                            //Possible Result
+                        }
+
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "LOUISIANA", "EAST BATON ROUGE");
+            }
         }
 
         public class Jefferson{
