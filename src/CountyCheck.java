@@ -6,12 +6,17 @@ import javafx.scene.text.Text;
 import org.apache.poi.ss.formula.functions.Count;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Pdf;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.print.PrintOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import javax.swing.*;
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Year;
 import java.util.*;
@@ -2724,8 +2729,7 @@ public class CountyCheck{
 
         public class EastBatonRouge{
 
-            //Assesssor could also maybe be "https://city.brla.gov/gis/propertylookup.asp"
-            private static final String url = "https://atlas.geoportalmaps.com/ebr";
+            private static final String url = "https://city.brla.gov/gis/propertylookup.asp";
             private static final int implicitWait = 5;
             private EastBatonRouge(){}
 
@@ -2743,39 +2747,79 @@ public class CountyCheck{
                 RemoteWebDriver driver = Web.chrome(implicitWait);
                 driver.get(url);
 
-                //Click ok on warning
-                Web.xPath.click(driver, "/html/body/div[27]/div[3]/div/button\n");
-
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
-
                     try{
-                        //Click on search
-                        Web.ID.carefulClick(driver, "showSearch");
+                        //type number in
+                        Web.xPath.clearTextBox(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[1]/input\n");
+                        //Web.xPath.type(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[1]/input\n", current.getNumber());
+                        Web.xPath.type(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[1]/input\n", "2300");
 
-                        //Change criteria to street address
-                        Web.ID.type(driver, "queryDDL", "street address");
+                        //type name
+                        Web.xPath.clearTextBox(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[2]/input\n");
+                        //Web.xPath.type(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[2]/input\n", current.getName());
+                        Web.xPath.type(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[2]/input\n", "CHURCH");
 
-                        //type street name
-                        //Web.ID.clearTextBox(driver, "3106");
-                        Web.ID.type(driver, "3106", current.getName());
+                        //Click the Address button
+                        Web.xPath.click(driver, "/html/body/div[1]/div/div/div/div/div/form/div/div[2]/table/tbody/tr[2]/td[3]/input\n");
 
-                        //type street number
-                        //Web.ID.clearTextBox(driver, "3107");
-                        Web.ID.type(driver, "3107", current.getNumber());
+                        boolean addressFound = false;
 
-                        //click search
-                        Web.ID.click(driver, "submit");
-
-                        if (Web.xPath.exists(driver, "//*[@id=\"closeSearchStatus\"]\n")){
-                            //No Results
-                            Web.ID.click(driver, "closeSearchStatus");
-                            System.out.println("no result");
+                        if (Web.xPath.exists(driver, "/html/body/div[1]/div/div/div/div/div/div/div/p\n")){
+                            //no result
                         } else {
-                            //Possible Result
-                        }
+                            //result
+                            if (Web.xPath.exists(driver, "/html/body/div[1]/div/div/div/div/div/div/div/table/tbody/tr/td[1]/a\n")){
+                                //single result
+                                if (Web.xPath.getTextFast(driver, "/html/body/div[1]/div/div/div/div/div/div/div/table/tbody/tr/td[1]/a\n").toUpperCase().contains(city.toUpperCase())) {
+                                    //good result
+                                    System.out.println("test");
+                                    Web.xPath.carefulClick(driver, "/html/body/div[1]/div/div/div/div/div/div/div/table/tbody/tr/td[1]/a\n");
+                                    System.out.println("clicked");
+                                    addressFound = true;
+                                }
+                            } else {
+                                //multiple result
+                                boolean found = false;
+                                boolean err = false;
+                                int count = 1;
 
+                                while ((!found)&(!err)){
+                                    try{
+                                        String txt = Web.xPath.getTextFast(driver, "/html/body/div[1]/div/div/div/div/div/div/div/table/tbody/tr[" + count  + "]/td[1]/a\n").toUpperCase();
+                                        if((txt.contains(current.getNumber().toUpperCase() + " "))&(txt.contains(current.getName().toUpperCase()))&(txt.contains(city.toUpperCase()))){
+                                            found = true;
+                                        }
+                                    } catch (Exception e){
+                                        err = true;
+                                    }
+                                    count += 1;
+                                }
+                                if (found){
+                                    Web.xPath.click(driver, "/html/body/div[1]/div/div/div/div/div/div/div/table/tbody/tr[" + (count-1)  + "]/td[1]/a\n");
+                                    addressFound = true;
+                                }
+                            }
+                            if (addressFound){
+                                //Switch to correct window
+                                Web.toWindow(driver, 1);
+                                //Collect data
+
+                                /**
+                                 * ToDo: Collect Data
+                                 */
+
+
+                                //close window
+                                driver.close();
+                                //Switch back to original window
+                                Web.toWindow(driver, 0);
+
+                            }
+                        }
+                        driver.get(url);
                     } catch (Exception e){
+                        e.printStackTrace();
                         undecideds.offer(current.toStringArrayList());
                         Excel.write(sourceFileName, collectionConvert(undecideds), header);
                         Excel.write(resultFileName, collectionConvert(exceptions), header);
