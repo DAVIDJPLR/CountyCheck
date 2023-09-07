@@ -9,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Pdf;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.print.PrintOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -2838,6 +2839,92 @@ public class CountyCheck{
             private static final String url = "https://www.jpassessor.net/Parcel/Search?ParcelType=11";
             private static final int implicitWait = 5;
             private Jefferson(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                Actions down = new Actions(driver);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+                    try{
+                        //Selects search by address
+                        Web.ID.carefulClick(driver, "SelectedCriteriaIndex");
+                        down.sendKeys(Keys.ARROW_DOWN).perform();
+
+                        String search = current.getNumber() + " " + current.getName();
+                        Web.ID.clearTextBox(driver, "SearchParams_Address");
+                        Web.ID.type(driver, "SearchParams_Address", search);
+                        Web.ID.click(driver, "SaveBtn");
+
+                        if (Web.xPath.exists(driver, "/html/body/div[2]/main/div[2]/strong\n")) {
+                            //Result
+                            boolean found = false;
+                            boolean err = false;
+                            int count = 1;
+                            while ((!found )&(!err)){
+                                try{
+                                    String result = Web.xPath.getText(driver, "/html/body/div[2]/main/div[3]/div/table/tbody/tr[" + count + "]/td[3]/a\n").toUpperCase();
+                                    if ((result.contains(current.getNumber().toUpperCase() + " "))&(result.contains(current.getName().toUpperCase()))){
+                                        found = true;
+                                    }
+                                } catch (Exception e){
+                                    err = true;
+                                }
+                                count += 1;
+                            }
+
+                            if (found){
+                                Web.xPath.click(driver, "/html/body/div[2]/main/div[3]/div/table/tbody/tr[" + (count-1) + "]/td[5]\n");
+
+                                /**
+                                 * ToDo: find a way to extract pin
+                                 */
+                                current.setPropertyType(Web.xPath.getText(driver, "/html/body/div[2]/main/div[4]/div[2]/div/table/tbody/tr[1]/td[1]\n"));
+                                current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/main/div[4]/div[2]/div/table/tbody/tr[1]/td[2]\n"));
+                                current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/main/div[4]/div[2]/div/table/tbody/tr[1]/td[2]\n"));
+                                current.setTaxCode(city);
+                                current.setConfirmedCounty("JEFFERSON");
+                                /**
+                                 * ToDo: make a decision on confirmed city
+                                 */
+                                if (current.isException()){
+                                    current.setReason("COUNTY CHECK");
+                                    current.setStatus("EXCEPTION");
+                                    //take screenshot
+                                    Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 33);
+
+                                    exceptions.offer(current.toStringArrayList());
+                                }
+
+                            }
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "LOUISIANA", "JEFFERSON");
+            }
         }
 
         public class Lafayette{
