@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 public class test extends Application {
 
     public static void main(String[] args) {
-        //CountyCheck.Texas.Brazoria.countyCheck("test.xls", "result.xls", "test");
         launch(args);
     }
 
