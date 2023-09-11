@@ -14,7 +14,7 @@ import java.util.*;
 
 public class CountyCheck{
 
-    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS", "TEXAS", "WASHINGTON"}));
+    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList(new String[]{"ILLINOIS","LOUISIANA" , "TEXAS", "WASHINGTON"}));
     public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList(new String[]{"BOONE", "CHAMPAIGN", "DEKALB", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"}));
     public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList(new String[]{"EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "ST TAMMANY"}));
     public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList(new String[]{"BRAZORIA"}));
