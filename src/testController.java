@@ -6,7 +6,8 @@ import java.util.ResourceBundle;
 public class testController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //CountyCheck.Texas.Atascosa.countyCheck("test.xlsx", "testresults.xlsx", "Pleasanton");
+        CountyCheck.Illinois.Adams.countyCheck("QUINCY.xlsx", "QUINCY_RESULTS.xlsx", "QUINCY");
+
     }
 
     public void test(){

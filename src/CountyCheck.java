@@ -1,3 +1,4 @@
+import com.sun.java.scene.web.WebViewHelper;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
@@ -16,9 +17,9 @@ import java.util.concurrent.TimeUnit;
 public class CountyCheck{
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS","LOUISIANA", "TEXAS", "WASHINGTON"));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("BOONE", "CHAMPAIGN", "DEKALB", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS", "BOONE", "CHAMPAIGN", "DEKALB", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"));
     public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList("EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "LIVINGSTON", "ST TAMMANY"));
-    public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BRAZORIA","LIBERTY", "MCLENNAN"));
+    public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BOWIE", "BRAZORIA", "DALLAS", "GALVESTON", "GRAYSON", "HIDALGO", "LIBERTY", "MCLENNAN", "WILSON"));
     public static final ArrayList<String> WASHINGTON = new ArrayList(Arrays.asList("WALLA WALLA"));
 
     private CountyCheck(){}
@@ -239,12 +240,12 @@ public class CountyCheck{
                 case "DEKALB":
                     CountyCheck.Illinois.Dekalb.countyCheck(sourceFileName, resultFileName,city);
                     break;
-//                case "DOUGLAS":
-//                    CountyCheck.Illinois.Douglas.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
-//                case "FRANKLIN":
-//                    CountyCheck.Illinois.Franklin.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "DOUGLAS":
+                    CountyCheck.Illinois.Douglas.countyCheck(sourceFileName, resultFileName, city);
+                    break;
+                case "FRANKLIN":
+                    CountyCheck.Illinois.Franklin.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 case "GRUNDY":
                     CountyCheck.Illinois.Grundy.countyCheck(sourceFileName, resultFileName, city);
                     break;
@@ -465,6 +466,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -574,7 +579,10 @@ public class CountyCheck{
                                     Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 100);
                                     exceptions.offer(current.toStringArrayList());
                                 }
-
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -684,6 +692,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -793,6 +805,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -901,6 +917,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1010,6 +1030,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1123,6 +1147,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1147,12 +1175,226 @@ public class CountyCheck{
             private static final String url = "https://douglasil.devnetwedge.com/";
             private static final int implicitWait = 5;
             private Douglas(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+                        Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
+                        Web.ID.type(driver, "parcel-search-house-number-max", current.getNumber());
+
+                        Web.ID.type(driver, "parcel-search-street-name", current.getName());
+
+                        Web.ID.type(driver, "parcel-search-community-name", city);
+
+                        Web.hitEnter(driver);
+
+                        boolean result = false;
+
+                        if (Web.xPath.exists(driver, "/html/body/div[2]/div[3]/table/tbody/tr/td\n")){
+                            if (Web.xPath.exists(driver, "/html/body/div[2]/div[3]/table/tbody/tr[1]/td[4]\n")){
+                                //multiple results
+
+                                int count = 1;
+                                boolean fail = false;
+
+                                while ((result == false)&&(fail == false)){
+                                    try{
+                                        String possible = Web.xPath.getText(driver, "/html/body/div[2]/div[3]/table/tbody/tr[" + count + "]/td[4]\n").toUpperCase();
+                                        if ((possible.contains(current.getNumber().toUpperCase()))&&(possible.contains(current.getName().toUpperCase()))){
+                                            result = true;
+                                        }
+                                    } catch (Exception e){
+                                        fail = true;
+                                    }
+                                    count += 1;
+                                }
+                                Web.xPath.click(driver, "/html/body/div[2]/div[3]/table/tbody/tr[" + (count-1) + "]/td[4]\n");
+                            } else {
+                                //no results
+                            }
+                        } else {
+                            //result
+                            result = true;
+                        }
+
+                        try {
+                            if (result == true) {
+                                //find info
+                                current.setPin(Web.xPath.getText(driver, "/html/body/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[1]/td[1]/div[2]\n"));
+                                current.setTaxCode(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]\n").split(" -")[0]);
+
+                                String prop = Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[3]/td[3]/div[2]/p\n").toUpperCase();
+                                current.setPropertyType(prop);
+                                if (current.getPropertyType().toUpperCase().equalsIgnoreCase("OTHER")) {
+                                    if (prop.contains("IMPROVED")) {
+                                        current.setPropertyType("RESIDENTIAL");
+                                    }
+                                }
+
+                                if (Web.xPath.exists(driver, "/html/body/div[2]/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[3]\n")) {
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[2]\n"));
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[3]\n"));
+                                }
+
+                                current.setConfirmedCounty("DOUGLAS");
+                                current.setConfirmedCity(city);
+                                current.setReason("COUNTY CHECK");
+
+                                if (current.isException()) {
+                                    Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 50);
+                                    exceptions.offer(current.toStringArrayList());
+                                }
+
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
+                            }
+                        } catch (NoSuchElementException e){
+
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "ILLINOIS", "DOUGLAS");
+            }
         }
 
         public class Franklin{
             private static final String url = "https://franklinil.devnetwedge.com/";
             private static final int implicitWait = 5;
             private Franklin(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+                        Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
+                        Web.ID.type(driver, "parcel-search-house-number-max", current.getNumber());
+
+                        Web.ID.type(driver, "parcel-search-street-name", current.getName());
+
+                        Web.ID.type(driver, "parcel-search-community-name", city);
+
+                        Web.hitEnter(driver);
+
+                        boolean result = false;
+
+                        if (Web.xPath.exists(driver, "/html/body/div[2]/div[3]/table/tbody/tr/td\n")){
+                            if (Web.xPath.exists(driver, "/html/body/div[2]/div[3]/table/tbody/tr[1]/td[4]\n")){
+                                //multiple results
+
+                                int count = 1;
+                                boolean fail = false;
+
+                                while ((result == false)&&(fail == false)){
+                                    try{
+                                        String possible = Web.xPath.getText(driver, "/html/body/div[2]/div[3]/table/tbody/tr[" + count + "]/td[4]\n").toUpperCase();
+                                        if ((possible.contains(current.getNumber().toUpperCase()))&&(possible.contains(current.getName().toUpperCase()))){
+                                            result = true;
+                                        }
+                                    } catch (Exception e){
+                                        fail = true;
+                                    }
+                                    count += 1;
+                                }
+                                Web.xPath.click(driver, "/html/body/div[2]/div[3]/table/tbody/tr[" + (count-1) + "]/td[4]\n");
+                            } else {
+                                //no results
+                            }
+                        } else {
+                            //result
+                            result = true;
+                        }
+
+                        try {
+                            if (result == true) {
+                                //find info
+                                current.setPin(Web.xPath.getText(driver, "/html/body/div[2]/div[1]/div[1]/div[1]/table/tbody/tr[1]/td[1]/div[2]\n"));
+                                current.setTaxCode(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[1]/table/tbody/tr[4]/td[2]/div[2]\n").split(" -")[0]);
+
+                                String prop = Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[1]/table/tbody/tr[4]/td[1]/div[2]\n").toUpperCase();
+                                current.setPropertyType(prop);
+                                if (current.getPropertyType().toUpperCase().equalsIgnoreCase("OTHER")) {
+                                    if (prop.contains("IMPROVED")) {
+                                        current.setPropertyType("RESIDENTIAL");
+                                    }
+                                }
+
+                                if (Web.xPath.exists(driver, "/html/body/div[2]/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[3]\n")) {
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[2]\n"));
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[3]\n"));
+                                }
+
+                                current.setConfirmedCounty("FRANKLIN");
+                                current.setConfirmedCity(city);
+                                current.setReason("COUNTY CHECK");
+
+                                if (current.isException()) {
+                                    Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 50);
+                                    exceptions.offer(current.toStringArrayList());
+                                }
+
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
+                            }
+                        } catch (NoSuchElementException e){
+
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "ILLINOIS", "FRANKLIN");
+            }
         }
 
         public class Grundy{
@@ -1244,6 +1486,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1352,6 +1598,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1467,6 +1717,10 @@ public class CountyCheck{
                                     Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 33);
                                     exceptions.offer(current.toStringArrayList());
                                 }
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1576,6 +1830,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1685,6 +1943,10 @@ public class CountyCheck{
                                    Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 67);
                                    exceptions.offer(current.toStringArrayList());
                                }
+                           } else {
+                               current.setReason("COUNTY CHECK");
+                               current.setStatus("NOT EXCEPTION");
+                               exceptions.offer(current.toStringArrayList());
                            }
                        } catch (NoSuchElementException e){
 
@@ -1799,6 +2061,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -1908,6 +2174,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2016,6 +2286,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2136,6 +2410,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2249,6 +2527,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2368,6 +2650,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2483,6 +2769,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2603,6 +2893,10 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         } catch (NoSuchElementException e){
 
@@ -2746,6 +3040,9 @@ public class CountyCheck{
 
                         } else {
                             //no result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -2801,8 +3098,13 @@ public class CountyCheck{
 
                         if (Web.xPath.exists(driver, "/html/body/div[1]/div[3]/section/div/form/table/tbody/tr/td/div/div/table[2]/tbody/tr/td/table/tbody/tr[3]/td/center/table[1]/tbody/tr[1]/td/div/p\n")) {
                             //No result
+
                             Web.ID.clearTextBox(driver, "inpNo");
                             Web.ID.clearTextBox(driver, "inpStreet");
+
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         } else if(Web.xPath.exists(driver, "/html/body/div[1]/div[3]/section/div/form/table/tbody/tr/td/div/div/table[2]/tbody/tr/td[1]/table/tbody/tr[3]/td/center/table[2]/tbody/tr[3]/td[4]/div\n")){
                             boolean found = false;
                             boolean fail = false;
@@ -2840,8 +3142,11 @@ public class CountyCheck{
                                 }
 
                                 driver.get(url);
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
-
                         } else{
                             //result
                             current.setPin((Web.xPath.getText(driver, "/html/body/div[1]/div[3]/section/div/form/div[3]/div/div/table/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr[1]/td[1]\n")).split(" ")[1]);
@@ -2911,6 +3216,10 @@ public class CountyCheck{
 
                         if (Web.xPath.getText(driver, "/html/body/form/div[3]/div[3]/div/div/font/span/div/table/tbody/tr[2]/td\n").toUpperCase().contains("NO RESULTS FOUND")){
                             //no result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+
                             driver.get(url);
                         } else{
                             //result
@@ -2947,6 +3256,10 @@ public class CountyCheck{
                                     Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 67);
                                     exceptions.offer(current.toStringArrayList());
                                 }
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                             driver.get(url);
                         }
@@ -3041,6 +3354,10 @@ public class CountyCheck{
 
                         if (!exist){
                             //No Result Found
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+
                             driver.get(url);
                         } else {
                             //Result Found
@@ -3088,6 +3405,9 @@ public class CountyCheck{
                                 Web.toWindow(driver, 0);
                                 driver.get(url);
                             } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                                 driver.get(url);
                             }
                         }
@@ -3204,6 +3524,9 @@ public class CountyCheck{
 
                         if (Web.xPath.exists(driver, "/html/body/div[1]/div/div/div/div/div/div/div/p\n")){
                             //no result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         } else {
                             //result
                             if (Web.xPath.exists(driver, "/html/body/div[1]/div/div/div/div/div/div/div/table/tbody/tr/td[1]/a\n")){
@@ -3263,7 +3586,10 @@ public class CountyCheck{
                                 driver.close();
                                 //Switch back to original window
                                 Web.toWindow(driver, 0);
-
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         }
                         driver.get(url);
@@ -3357,7 +3683,15 @@ public class CountyCheck{
                                     exceptions.offer(current.toStringArrayList());
                                 }
 
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
                         driver.get(url);
                     } catch (Exception e){
@@ -3414,8 +3748,14 @@ public class CountyCheck{
 
                         if (Web.xPath.exists(driver, "/html/body/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/div[1]/div/div[2]/div[2]/div/div[2]/div[1]/div[3]/div[3]/ul[32]/li[1]/div[4]/div/div/a\n")){
                             //No Results
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         } else if (Web.xPath.exists(driver, "/html/body/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/div[1]/div/div[2]/div[17]/div/div[3]/div/div/form/div[1]/div/div[1]/div/div/div/div[1]/div/div/blockquote/p\n")){
                             //No Result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         } else {
                             //Results
                             boolean found = false;
@@ -3466,6 +3806,10 @@ public class CountyCheck{
                                     Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 100);
                                     exceptions.offer(current.toStringArrayList());
                                 }
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         }
 
@@ -3530,6 +3874,9 @@ public class CountyCheck{
 
                         if (Web.ID.getText(driver, "statusText").toUpperCase().equalsIgnoreCase("NO RESULTS FOUND")){
                             //No Result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         } else {
                             //Result
                             Web.xPath.click(driver, "/html/body/div[16]/div[1]/div/div[1]/div[2]/a");
@@ -3547,6 +3894,10 @@ public class CountyCheck{
                                 current.setReason("COUNTY CHECK");
                                 current.setStatus("EXCEPTION");
                                 Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 100);
+                                exceptions.offer(current.toStringArrayList());
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
                                 exceptions.offer(current.toStringArrayList());
                             }
                         }
@@ -3568,7 +3919,6 @@ public class CountyCheck{
         }
 
         public class Orleans{
-//            private static final String url = "https://beacon.schneidercorp.com/Application.aspx?AppID=979&LayerID=19792&PageTypeID=2&PageID=8661";
             private static final String url = "CAPTCHA";
             private static final int implicitWait = 20;
             private Orleans(){}
@@ -3675,6 +4025,10 @@ public class CountyCheck{
 
                         if (Web.xPath.exists(driver, "/html/body/div[1]/div[1]/div[2]/div[1]/button/span[1]\n")){
                             //No Result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+
                             Web.xPath.click(driver, "/html/body/div[1]/div[1]/div[2]/div[1]/button/span[1]\n");
                         } else {
                             boolean found = false;
@@ -3721,6 +4075,10 @@ public class CountyCheck{
                                     }
                                 }
                                 driver.get(url);
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                             }
                         }
                     } catch (Exception e){
@@ -3738,6 +4096,7 @@ public class CountyCheck{
                 done(exceptions.size(), "LOUISIANA", "ST TAMMANY");
             }
         }
+
     }
 
     public class Michigan{
@@ -3895,15 +4254,15 @@ public class CountyCheck{
                 case "ATASCOSA":
                     CountyCheck.Texas.Atascosa.countyCheck(sourceFileName, resultFileName, city);
                     break;
-//                case "BOWIE":
-//                    CountyCheck.Texas.Bowie.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "BOWIE":
+                    CountyCheck.Texas.Bowie.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 case "BRAZORIA":
                     CountyCheck.Texas.Brazoria.countyCheck(sourceFileName, resultFileName, city);
                     break;
-//                case "DALLAS":
-//                    CountyCheck.Texas.Dallas.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "DALLAS":
+                    CountyCheck.Texas.Dallas.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 case "GALVESTON":
                     CountyCheck.Texas.Galveston.countyCheck(sourceFileName, resultFileName, city);
                     break;
@@ -3919,9 +4278,9 @@ public class CountyCheck{
                 case "MCLENNAN":
                     CountyCheck.Texas.Mclennan.countyCheck(sourceFileName, resultFileName, city);
                     break;
-//                case "WILSON":
-//                    CountyCheck.Texas.Wilson.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "WILSON":
+                    CountyCheck.Texas.Wilson.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 default:
                     noCounty("TEXAS", county);
                     break;
@@ -3974,7 +4333,7 @@ public class CountyCheck{
                         int numResults = Integer.valueOf(((Web.ID.getText(driver, "page-header")).split("Total: ")[1]).split(" ")[0]);
                         if (numResults == 0){
                             //No Results
-
+                            exceptions.offer(current.toStringArrayList());
                         } else if (numResults == 1){
                             //One Result
                             String potResult = Web.xPath.getTextFast(driver, "/html/body/div[4]/div[4]/div[2]/table/tbody/tr[2]/td[8]\n").toUpperCase();
@@ -4041,6 +4400,10 @@ public class CountyCheck{
                                 Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
                                 exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -4064,6 +4427,126 @@ public class CountyCheck{
             private static final String url = "https://bowieappraisal.com/property-search";
             private static final int implicitWait = 5;
             private Bowie(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                Actions search = new Actions(driver);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+                    try{
+                        //click to search by address
+                        Web.xPath.click(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div/ul/li[2]/a/div\n");
+                        //choose previous tax year
+                        Web.xPath.click(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/form/div[1]/div/select\n");
+                        search.sendKeys(Keys.ARROW_DOWN).perform();
+                        Web.hitEnter(driver);
+                        //Enter the address number
+                        Web.ID.type(driver, "StreetNumber", current.getNumber());
+                        //Enter the address name
+                        Web.ID.type(driver, "StreetName", current.getName());
+                        //Click search button
+                        Web.xPath.click(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/form/div[3]/div[4]/button\n");
+
+                        String numresults = (Web.xPath.getText(driver, "/html/body/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div\n")).split("of ")[1];
+
+                        boolean gatherInfo = false;
+
+                        if (numresults.equalsIgnoreCase("0")){
+                            //No Results
+                        } else if (numresults.equalsIgnoreCase("1")){
+                            //One result
+                            String result = Web.xPath.getTextFast(driver, "/html/body/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/table/tbody/tr/td[2]/address\n").toUpperCase();
+                            if ((result.contains(current.getNumber() + " "))&(result.contains(current.getName()))&(result.contains(city.toUpperCase()))){
+                                Web.xPath.click(driver, "/html/body/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/table/tbody/tr/td[2]/address\n");
+                                gatherInfo = true;
+                            }
+                        } else {
+                            //multiple results
+                            boolean found = false;
+                            boolean err = false;
+                            int count = 1;
+
+                            while((!found)&(!err)){
+                                try{
+                                    String result = Web.xPath.getTextFast(driver, "/html/body/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/table/tbody/tr[" + count + "]/td[2]/address\n").toUpperCase();
+                                    if ((result.contains(current.getNumber() + " "))&(result.contains(current.getName()))&(result.contains(city.toUpperCase()))){
+                                        found = true;
+                                    }
+                                    count += 1;
+                                } catch (Exception e){
+                                    err = true;
+                                }
+                            }
+                            if (found){
+                                Web.xPath.click(driver, "/html/body/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/table/tbody/tr[" + (count-1) + "]/td[2]/address\n");
+                                gatherInfo = true;
+                            }
+                        }
+
+                        if (gatherInfo){
+                            current.setPin((Web.xPath.getText(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[1]/h3/span\n")).split(" ")[0]);
+                            current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[3]/div/div/div[3]/table/tbody/tr[1]/td[1]\n"));
+                            current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[3]/div/div/div[3]/table/tbody/tr[2]/td[1]\n"));
+
+                            current.setTaxCode(city.toUpperCase());
+                            current.setConfirmedCity(city.toUpperCase());
+                            current.setConfirmedCounty("BOWIE");
+                            current.setPropertyType("RESIDENTIAL");
+                            current.setReason("COUNTY CHECK");
+
+                            if (current.isException()){
+                                current.setStatus("EXCEPTION");
+                                //Take Screenshot
+                                Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
+                                exceptions.offer(current.toStringArrayList());
+                            }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        boolean err = false;
+
+                        if (Web.xPath.exists(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/div")){
+                            if ((Web.xPath.getTextFast(driver, "/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/div")).equalsIgnoreCase("Bad Request")){
+                                driver.get(url);
+                            } else {
+                                err = true;
+                            }
+                        } else {
+                            err = true;
+                        }
+
+                        if (err) {
+                            e.printStackTrace();
+                            undecideds.offer(current.toStringArrayList());
+                            Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                            Excel.write(resultFileName, collectionConvert(exceptions), header);
+                            problem(e.getMessage());
+                            return;
+                        }
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "TEXAS", "BOWIE");
+            }
         }
 
         public class Brazoria{
@@ -4104,6 +4587,10 @@ public class CountyCheck{
                         System.out.println(Web.ID.getText(driver, "propertySearchResults_pageHeading"));
                         if (Web.ID.getText(driver, "propertySearchResults_pageHeading").equalsIgnoreCase("None found.")){
                             //no result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+
                             driver.get(url);
                         } else {
                             //result
@@ -4144,11 +4631,17 @@ public class CountyCheck{
 
                                 } else{
                                     //no info
+                                    current.setReason("COUNTY CHECK");
+                                    current.setStatus("NOT EXCEPTION");
+                                    exceptions.offer(current.toStringArrayList());
                                     driver.get(url);
                                 }
 
                             } catch (Exception e){
                                 //no result
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                                 driver.get(url);
                             }
                         }
@@ -4173,6 +4666,131 @@ public class CountyCheck{
             private static final String url = "https://www.dallascad.org/searchaddr.aspx";
             private static final int implicitWait = 5;
             private Dallas(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                Actions search = new Actions(driver);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+
+                    try{
+                        //Type address number
+                        Web.ID.type(driver, "txtAddrNum", current.getNumber());
+                        //Type address name
+                        Web.ID.type(driver, "txtStName", current.getName());
+                        //Enter city
+                        Web.ID.click(driver, "listCity");
+                        search.sendKeys(city).perform();
+                        Web.hitEnter(driver);
+                        //Hit search button
+                        Web.ID.click(driver, "cmdSubmit");
+
+                        boolean gatherInfo = false;
+                        boolean yes = true;
+
+                        if (Web.ID.exists(driver, "SearchResults1_lblMessage")){
+                            if (Web.ID.getTextFast(driver, "SearchResults1_lblMessage").equalsIgnoreCase("No Records Found.")){
+                                //No Result
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
+
+                                yes = false;
+                            }
+                        }
+
+                        if (yes){
+                            String numRes = ((Web.xPath.getTextFast(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/p[1]/table/tbody/tr[1]/td[1]\n").toUpperCase()).split(" OF ")[1]).split(" ")[0];
+                            if (numRes.equalsIgnoreCase("1")){
+                                //One Results
+                                String result = Web.xPath.getTextFast(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/p[1]/table/tbody/tr[3]/td[2]\n").toUpperCase();
+                                String resultCity = Web.xPath.getTextFast(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/p[1]/table/tbody/tr[3]/td[3]\n").toUpperCase();
+                                if ((result.contains((current.getNumber() + " ").toUpperCase()))&(result.contains(current.getName().toUpperCase()))&(resultCity.contains(city.toUpperCase()))){
+                                    Web.xPath.click(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/p[1]/table/tbody/tr[3]/td[2]\n");
+                                    gatherInfo = true;
+                                }
+                            } else {
+                                //Multiple Results
+                                boolean found = false;
+                                boolean err = false;
+                                int count = 3;
+                                
+                                while((!found)&(!err)){
+                                    try{
+                                        String result = Web.xPath.getTextFast(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/p[1]/table/tbody/tr[" + count + "]/td[2]\n").toUpperCase();
+                                        String resultCity = Web.xPath.getTextFast(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/table/tbody/tr[" + count + "]/td[3]\n").toUpperCase();
+                                        if ((result.contains(current.getNumber() + " "))&(result.contains(current.getName()))&(resultCity.contains(city.toUpperCase()))){
+                                            found = true;
+                                        }
+                                        count += 1 ;
+                                    } catch (Exception e){
+                                        err = true;
+                                    }
+                                }
+                                if (found){
+                                    Web.xPath.click(driver, "/html/body/form/table[2]/tbody/tr[1]/td[2]/div/p[1]/table/tbody/tr[" + (count-1) + "]/td[2]\n");
+                                    gatherInfo = true;
+                                }
+                            }
+
+                            if(gatherInfo){
+                                try{
+                                    current.setPin((Web.ID.getText(driver, "lblPageTitle")).split("#")[1]);
+                                    current.setLandValue(Web.ID.getTextFast(driver, "ValueSummary1_pnlValue_lblLandVal"));
+                                    current.setBuildingValue(Web.ID.getTextFast(driver, "ValueSummary1_lblImpVal"));
+
+                                    current.setTaxCode(city.toUpperCase());
+                                    current.setConfirmedCity(city.toUpperCase());
+                                    current.setConfirmedCounty("DALLAS");
+                                    current.setPropertyType("RESIDENTIAL");
+                                    current.setReason("COUNTY CHECK");
+
+                                    if (current.isException()){
+                                        current.setStatus("EXCEPTION");
+                                        //Take Screenshot
+                                        Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 100);
+                                        exceptions.offer(current.toStringArrayList());
+                                    }
+                                } catch (Exception a){
+                                    current.setReason("COUNTY CHECK");
+                                    current.setStatus("NOT EXCEPTION");
+                                    exceptions.offer(current.toStringArrayList());
+                                }
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
+                            }
+
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "TEXAS", "DALLAS");
+            }
         }
 
         public class Galveston{
@@ -4288,6 +4906,10 @@ public class CountyCheck{
                                 Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
                                 exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -4417,6 +5039,10 @@ public class CountyCheck{
                                 Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
                                 exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -4482,7 +5108,6 @@ public class CountyCheck{
                         int numResults = Integer.valueOf(((Web.ID.getText(driver, "page-header")).split("Total: ")[1]).split(" ")[0]);
                         if (numResults == 0){
                             //No Results
-
                         } else if (numResults == 1){
                             //One Result
                             String potResult = Web.xPath.getTextFast(driver, "/html/body/div[4]/div[4]/div[2]/table/tbody/tr[2]/td[8]\n").toUpperCase();
@@ -4549,6 +5174,10 @@ public class CountyCheck{
                                 Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
                                 exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -4679,6 +5308,10 @@ public class CountyCheck{
                                 Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
                                 exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -4814,6 +5447,10 @@ public class CountyCheck{
                                 Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
                                 exceptions.offer(current.toStringArrayList());
                             }
+                        } else {
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
                         }
 
                         driver.get(url);
@@ -4837,6 +5474,142 @@ public class CountyCheck{
             private static final String url = "https://propaccess.trueautomation.com/clientdb/?cid=27";
             private static final int implicitWait = 5;
             private Wilson(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                Actions search = new Actions(driver);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+                    try{
+                        //Click advanced options
+                        Web.ID.click(driver, "propertySearchOptions_advanced");
+                        //Choose the previous tax year
+                        Web.ID.carefulClick(driver, "propertySearchOptions_taxyear");
+                        search.sendKeys(Keys.ARROW_DOWN).perform();
+                        Web.hitEnter(driver);
+                        //Type number in
+                        Web.ID.type(driver, "propertySearchOptions_streetNumber", current.getNumber());
+                        //Type name in
+                        Web.ID.type(driver, "propertySearchOptions_streetName", current.getName());
+                        //Click search button
+                        Web.ID.click(driver, "propertySearchOptions_searchAdv");
+
+                        //check to see if there are results
+                        boolean found = false;
+
+                        String num = Web.ID.getTextFast(driver, "propertySearchResults_pageHeading");
+                        if (num.equalsIgnoreCase("None found.")){
+                            //No Result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+                        } else {
+                            //Result
+                            num = (num.split("of ")[1]).split(" for")[0];
+                            if (num.equalsIgnoreCase("1")){
+                                //One Result
+                                String result = Web.ID.getTextFast(driver, "propertySearchResults_address0").toUpperCase();
+                                if ((result.contains(current.getNumber() + " "))&&(result.contains(current.getName() + " "))&&(result.contains(city.toUpperCase()))){
+                                    Web.xPath.click(driver, "/html/body/form/div[3]/div[2]/table/tbody/tr[2]/td[10]/a\n");
+                                    found = true;
+                                }
+                            } else {
+                                //Multiple Results
+                                boolean result = false;
+                                boolean err = false;
+                                int count = 0;
+
+                                while((!result)&(!err)){
+                                    try{
+                                        String res = Web.ID.getTextFast(driver, "propertySearchResults_address" + count).toUpperCase();
+                                        if ((res.contains(current.getNumber() + " "))&(res.contains(current.getName() + " "))&(res.contains(city.toUpperCase()))){
+                                            result = true;
+                                        }
+                                        count += 1;
+                                    } catch (Exception e) {
+                                        err = true;
+                                    }
+                                    if (result){
+                                        Web.xPath.click(driver, "/html/body/form/div[3]/div[2]/table/tbody/tr[" + (count+1) + "]/td[10]/a\n");
+                                        found = true;
+                                    }
+                                }
+                            }
+
+                            if(found){
+                                //choose the previous tax year
+                                Web.ID.carefulClick(driver, "propertyHeading_taxyear");
+                                search.sendKeys(Keys.ARROW_DOWN).perform();
+                                Web.hitEnter(driver);
+
+                                current.setPin(Web.xPath.getText(driver, "/html/body/form/div/div[5]/div[3]/table/tbody/tr[2]/td[2]\n"));
+
+                                Web.xPath.carefulClick(driver, "/html/body/form/div/div[5]/div[4]/h3\n");
+
+                                int com = 0;
+                                current.setBuildingValue(Web.xPath.getText(driver, "/html/body/form/div/div[5]/div[5]/table/tbody/tr[2]/td[3]\n"));
+                                if (current.getBuildingValue().equalsIgnoreCase("0")){
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/form/div/div[5]/div[5]/table/tbody/tr[3]/td[3]\n"));
+                                    com += 1;
+                                }
+
+                                current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/div/div[5]/div[5]/table/tbody/tr[4]/td[3]\n"));
+                                if (current.getLandValue().equalsIgnoreCase("0")){
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/form/div/div[5]/div[5]/table/tbody/tr[5]/td[3]\n"));
+                                }
+
+                                if (com == 2){
+                                    current.setPropertyType("COMMERCIAL");
+                                } else {
+                                    current.setPropertyType("RESIDENTIAL");
+                                }
+
+                                current.setTaxCode(city.toUpperCase());
+                                current.setConfirmedCity(city.toUpperCase());
+                                current.setConfirmedCounty("WILSON");
+                                current.setReason("COUNTY CHECK");
+
+                                if (current.isException()){
+                                    //Take Screenshot
+                                    Web.takeScreenshot(driver, screenshotPath + "\\" + current + ".JPG", 75);
+
+                                    current.setStatus("EXCEPTION");
+                                    exceptions.offer(current.toStringArrayList());
+                                }
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
+                            }
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "TEXAS", "WILSON");
+            }
         }
 
     }
@@ -4903,6 +5676,10 @@ public class CountyCheck{
                         System.out.println(Web.ID.getText(driver, "propertySearchResults_pageHeading"));
                         if (Web.ID.getText(driver, "propertySearchResults_pageHeading").equalsIgnoreCase("None found.")){
                             //no result
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+
                             driver.get(url);
                         } else {
                             //result
@@ -4942,11 +5719,17 @@ public class CountyCheck{
 
                                 } else{
                                     //no info
+                                    current.setReason("COUNTY CHECK");
+                                    current.setStatus("NOT EXCEPTION");
+                                    exceptions.offer(current.toStringArrayList());
                                     driver.get(url);
                                 }
 
                             } catch (Exception e){
                                 //no result
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
                                 driver.get(url);
                             }
                         }
