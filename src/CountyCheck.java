@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class CountyCheck{
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS","LOUISIANA", "TEXAS", "WASHINGTON"));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS", "BOONE", "CHAMPAIGN", "DEKALB", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"));
     public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList("EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "LIVINGSTON", "ST TAMMANY"));
     public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BOWIE", "BRAZORIA", "DALLAS", "GALVESTON", "GRAYSON", "HIDALGO", "LIBERTY", "MCLENNAN", "WILSON"));
     public static final ArrayList<String> WASHINGTON = new ArrayList(Arrays.asList("WALLA WALLA"));
