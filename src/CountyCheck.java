@@ -2,6 +2,7 @@ import com.sun.java.scene.web.WebViewHelper;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
+import org.apache.poi.ss.formula.functions.Count;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -16,10 +17,11 @@ import java.util.concurrent.TimeUnit;
 
 public class CountyCheck{
 
-    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS","LOUISIANA", "TEXAS", "WASHINGTON"));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "GRUNDY", "HENRY", "KANE", "KENDALL", "LIVINGSTON", "LAKE", "LASALLE", "MADISON", "MARION", "ST CLAIR", "WILL"));
-    public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList("EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "LIVINGSTON", "ST TAMMANY"));
-    public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BOWIE", "BRAZORIA", "DALLAS", "GALVESTON", "GRAYSON", "HIDALGO", "LIBERTY", "MCLENNAN", "WILSON"));
+    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS","LOUISIANA", "PENNSYLVANIA", "TEXAS", "WASHINGTON"));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "FRANKLIN", "GRUNDY", "HENRY", "KANE", "KANKAKEE", "KENDALL","LAKE", "LASALLE", "LIVINGSTON", "MADISON", "MARION", "MCLEAN", "PEORIA", "ROCK ISLAND", "ST CLAIR", "VERMILION", "WILL"));
+    public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList("DESOTO", "EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "LIVINGSTON", "ST TAMMANY"));
+    public static final ArrayList<String> PENNSYLVANIA = new ArrayList(Arrays.asList("DAUPHIN"));
+    public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BOWIE", "BRAZORIA", "DALLAS", "GALVESTON", "GRAYSON", "HIDALGO", "LIBERTY", "MCLENNAN", "SMITH", "WILSON"));
     public static final ArrayList<String> WASHINGTON = new ArrayList(Arrays.asList("WALLA WALLA"));
 
     private CountyCheck(){}
@@ -96,6 +98,8 @@ public class CountyCheck{
 //                return OKLAHOMA;
 //            case "OREGON":
 //                return OREGON;
+            case "PENNSYLVANIA":
+                return PENNSYLVANIA;
             case "TEXAS":
                 return TEXAS;
             case "WASHINGTON":
@@ -3454,6 +3458,11 @@ public class CountyCheck{
 //                case "AVOYELLES":
 //                    CountyCheck.Louisiana.Avoyelles.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
+//                case "BOSSIER":
+//                    CountyCheck.Louisiana.Bossier.countyCheck(sourceFileName, resultFileName, city);
+                case "DESOTO":
+                    CountyCheck.Louisiana.Desoto.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 case "EAST BATON ROUGE":
                     CountyCheck.Louisiana.EastBatonRouge.countyCheck(sourceFileName, resultFileName, city);
                     break;
@@ -3485,6 +3494,96 @@ public class CountyCheck{
             private static final String url = "NO GO";
             private static final int implicitWait = 5;
             private Avoyelles(){}
+        }
+
+        public class Bossier{
+            private static final String url = "Captcha";
+            private static final int implicitWait = 5;
+            private Bossier(){}
+        }
+
+        public class Desoto{
+            private static final String url = "https://www.desotoassessor.org/SearchForm.aspx";
+            private static final int implicitWait = 5;
+            private Desoto(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)) {
+                    Address current = new Address(undecideds.poll());
+                    try{
+                        Web.toFrame(driver, 0);
+
+                        Web.xPath.click(driver, "/html/body/div[2]/div/div[3]/div/div/form/input[3]\n");
+
+                        Web.xPath.clearTextBox(driver, "/html/body/div[2]/div/div[3]/div/div/form/div[1]/div/input[1]\n");
+                        Web.xPath.type(driver, "/html/body/div[2]/div/div[3]/div/div/form/div[1]/div/input[1]\n", current.getNumber());
+
+                        Web.xPath.clearTextBox(driver, "/html/body/div[2]/div/div[3]/div/div/form/div[1]/div/input[2]\n");
+                        Web.xPath.type(driver, "/html/body/div[2]/div/div[3]/div/div/form/div[1]/div/input[2]\n", current.getName());
+                        Web.hitEnter(driver);
+
+                        Web.xPath.click(driver, "/html/body/div[2]/div/div[3]/div/div/form/div[4]/button\n");
+
+                        if (Web.xPath.exists(driver, "/html/body/div[2]/div/div[3]/div/div/div\n")) {
+                            //No Results
+                            current.setReason("COUNTY CHECK");
+                            current.setStatus("NOT EXCEPTION");
+                            exceptions.offer(current.toStringArrayList());
+                        } else {
+                            //Results
+                            //Click on first Result
+                            Web.xPath.click(driver, "/html/body/div[2]/div/div[3]/div/div/table/tbody/tr/td[4]/a\n");
+
+                            Web.defaultContent(driver);
+                            Web.toWindow(driver, 1);
+
+                            current.setPin(Web.xPath.getText(driver, "/html/body/div[4]/div/div[1]/span[2]\n"));
+                            current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[4]/div/div[8]/table/tbody/tr[1]/td[3]\n"));
+                            current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[4]/div/div[8]/table/tbody/tr[1]/td[2]\n"));
+                            current.setConfirmedCounty("DESOTO");
+                            current.setConfirmedCity(city.toUpperCase());
+                            current.setPropertyType("RESIDENTIAL");
+                            current.setTaxCode(city.toUpperCase());
+
+                            if (current.isException()){
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("EXCEPTION");
+                                //take screenshot
+                                Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 80);
+
+                                exceptions.offer(current.toStringArrayList());
+                            }
+                            driver.close();
+                        }
+
+                        Web.defaultContent(driver);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "LOUISIANA", "DSESOTO");
+            }
         }
 
         public class EastBatonRouge{
@@ -4255,7 +4354,7 @@ public class CountyCheck{
         public static void countyCheck (String sourceFileName, String resultFileName, String county, String city){
             switch (county){
                 case "DAUPHIN":
-                    CountyCheck.Pennsylvania.Dauphin.countyCheck(sourceFileName, resultFileName, city);
+                    Dauphin.countyCheck(sourceFileName, resultFileName, city);
                     break;
                 default:
                     noCounty("PENNSYLVANIA", county);
@@ -4408,6 +4507,8 @@ public class CountyCheck{
                 case "MCLENNAN":
                     CountyCheck.Texas.Mclennan.countyCheck(sourceFileName, resultFileName, city);
                     break;
+                case "SMITH":
+                    CountyCheck.Texas.Smith.countyCheck(sourceFileName, resultFileName, city);
                 case "WILSON":
                     CountyCheck.Texas.Wilson.countyCheck(sourceFileName, resultFileName, city);
                     break;
