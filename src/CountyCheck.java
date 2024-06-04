@@ -263,9 +263,9 @@ public class CountyCheck{
                 case "HENRY":
                     CountyCheck.Illinois.Henry.countyCheck(sourceFileName, resultFileName, city);
                     break;
-//                case "JODAVIESS":
-//                    CountyCheck.Illinois.JoDaviess.countyCheck(sourceFileName, resultFileName, city);
-//                    break;
+                case "JODAVIESS":
+                    CountyCheck.Illinois.JoDaviess.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 case "KANE":
                     CountyCheck.Illinois.Kane.countyCheck(sourceFileName, resultFileName, city);
                     break;
