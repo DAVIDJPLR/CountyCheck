@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class CountyCheck{
 
     public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS"/**,"LOUISIANA", "PENNSYLVANIA", "TEXAS", "WASHINGTON"**/));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "COOK", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "FRANKLIN", "GRUNDY", "HENRY", "KANE", "KANKAKEE", "KENDALL"/**,"LAKE"**/, "LASALLE", "LIVINGSTON", "MADISON", "MARION", "MCLEAN", "PEORIA", "ROCK ISLAND", "ST CLAIR", "VERMILION", "WILL"));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "COOK", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "FRANKLIN", "GRUNDY", "HENRY", "JO DAVIESS", "KANE", "KANKAKEE", "KENDALL"/**,"LAKE"**/, "LASALLE", "LIVINGSTON", "MADISON", "MARION", "MCLEAN", "PEORIA", "ROCK ISLAND", "ST CLAIR", "VERMILION", "WILL"));
     public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList("DESOTO", "EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "LIVINGSTON", "ST TAMMANY"));
     public static final ArrayList<String> PENNSYLVANIA = new ArrayList(Arrays.asList("DAUPHIN"));
     public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BOWIE", "BRAZORIA", "DALLAS", "GALVESTON", "GRAYSON", "HIDALGO", "LIBERTY", "MCLENNAN", "SMITH", "WILSON"));
@@ -1706,6 +1706,118 @@ public class CountyCheck{
             private static final String url = "https://jodaviessil.devnetwedge.com/";
             private static final int implicitWait = 5;
             private JoDaviess(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                total = undecideds.size();
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
+
+                    try{
+                        Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
+                        Web.ID.type(driver, "parcel-search-house-number-max", current.getNumber());
+
+                        Web.ID.type(driver, "parcel-search-street-name", current.getName());
+
+                        Web.ID.type(driver, "parcel-search-community-name", city);
+
+                        Web.hitEnter(driver);
+
+                        boolean result = false;
+
+                        if (Web.xPath.exists(driver, "/html/body/div[2]/div[2]/div/table/tbody/tr/td\n")){
+                            if (Web.xPath.exists(driver, "/html/body/div[2]/div[2]/div/table/tbody/tr[1]/td[3]\n")){
+                                //multiple results
+
+                                int count = 1;
+                                boolean fail = false;
+
+                                while ((result == false)&&(fail == false)){
+                                    try{
+                                        String possible = Web.xPath.getText(driver, "/html/body/div[2]/div[2]/div/table/tbody/tr[" + count + "]/td[3]\n").toUpperCase();
+                                        if ((possible.contains(current.getNumber().toUpperCase()))&&(possible.contains(current.getName().toUpperCase()))){
+                                            result = true;
+                                        }
+                                    } catch (Exception e){
+                                        fail = true;
+                                    }
+                                    count += 1;
+                                }
+                                Web.xPath.click(driver, "/html/body/div[2]/div[2]/div/table/tbody/tr[" + (count-1) + "]/td[3]\n");
+                            } else {
+                                //no results
+                            }
+                        } else {
+                            //result
+                            result = true;
+                        }
+
+                        try {
+                            if (result == true) {
+                                //find info
+                                current.setPin(Web.xPath.getText(driver, "/html/body/div[2]/div[1]/div[1]/div[2]/div[2]/table/tbody/tr[1]/td[1]/div[2]\n"));
+                                current.setTaxCode(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[2]/div[2]/table/tbody/tr[4]/td[2]/div[2]\n").split(" -")[0]);
+
+                                String prop = Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[2]/div[2]/table/tbody/tr[4]/td[1]/div[2]\n").toUpperCase();
+                                current.setPropertyType(prop);
+                                if (current.getPropertyType().toUpperCase().equalsIgnoreCase("OTHER")) {
+                                    if (prop.contains("IMPROVED")) {
+                                        current.setPropertyType("RESIDENTIAL");
+                                    }
+                                }
+
+                                if (Web.xPath.exists(driver, "/html/body/div[2]/div[1]/div[1]/div[4]/div[2]/table/tbody/tr/td[3]\n")) {
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[4]/div[2]/table/tbody/tr/td[2]\n"));
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[2]/div[1]/div[1]/div[4]/div[2]/table/tbody/tr/td[3]\n"));
+                                }
+
+                                current.setConfirmedCounty("JO DAVIESS");
+                                current.setConfirmedCity(city);
+                                current.setReason("COUNTY CHECK");
+                                if (current.isException()) {
+                                    Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 67);
+                                    exceptions.offer(current.toStringArrayList());
+                                }
+
+                            } else {
+                                current.setReason("COUNTY CHECK");
+                                current.setStatus("NOT EXCEPTION");
+                                exceptions.offer(current.toStringArrayList());
+                            }
+                        } catch (NoSuchElementException e){
+
+                        }
+                        driver.get(url);
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                total = 0;
+                actual = 0;
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "ILLINOIS", "JO DAVIESS");
+            }
         }
 
         public class Kane{

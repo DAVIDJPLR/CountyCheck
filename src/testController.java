@@ -7,7 +7,7 @@ public class testController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        CountyCheck.Illinois.Will.countyCheck("New Lenox Test.xlsx", "NEW_LENOX_TEST_RESULTS.xlsx", "NEW LENOX");
-        CountyCheck.Illinois.Cook.countyCheck("test.xlsx", "testResults.xlsx", "Alsip");
+        CountyCheck.Illinois.JoDaviess.countyCheck("test.xlsx", "testResults.xlsx", "Galena");
 
 
         //CountyCheck.Illinois.Will.countyCheck("Elwood.xlsx", "Elwood_results.xlsx", "Elwood");
