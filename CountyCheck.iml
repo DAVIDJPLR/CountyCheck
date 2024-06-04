@@ -29,7 +29,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Web/Web/out/artifacts/Web1_4_jar/Web - Copy.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../Dependancies/Web_1-5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

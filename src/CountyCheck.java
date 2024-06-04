@@ -17,14 +17,18 @@ import java.util.concurrent.TimeUnit;
 
 public class CountyCheck{
 
-    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS","LOUISIANA", "PENNSYLVANIA", "TEXAS", "WASHINGTON"));
-    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "FRANKLIN", "GRUNDY", "HENRY", "KANE", "KANKAKEE", "KENDALL","LAKE", "LASALLE", "LIVINGSTON", "MADISON", "MARION", "MCLEAN", "PEORIA", "ROCK ISLAND", "ST CLAIR", "VERMILION", "WILL"));
+    public static final ArrayList<String> STATES = new ArrayList(Arrays.asList("ILLINOIS"/**,"LOUISIANA", "PENNSYLVANIA", "TEXAS", "WASHINGTON"**/));
+    public static final ArrayList<String> ILLINOIS = new ArrayList(Arrays.asList("ADAMS","BOND", "BOONE", "CARROL", "CHAMPAIGN", "COOK", "CUMBERLAND", "DEKALB", "DOUGLAS", "FAYETTE", "FRANKLIN", "GRUNDY", "HENRY", "KANE", "KANKAKEE", "KENDALL"/**,"LAKE"**/, "LASALLE", "LIVINGSTON", "MADISON", "MARION", "MCLEAN", "PEORIA", "ROCK ISLAND", "ST CLAIR", "VERMILION", "WILL"));
     public static final ArrayList<String> LOUISIANA = new ArrayList(Arrays.asList("DESOTO", "EAST BATON ROUGE", "JEFFERSON", "LAFAYETTE", "LIVINGSTON", "ST TAMMANY"));
     public static final ArrayList<String> PENNSYLVANIA = new ArrayList(Arrays.asList("DAUPHIN"));
     public static final ArrayList<String> TEXAS = new ArrayList(Arrays.asList("ATASCOSA", "BOWIE", "BRAZORIA", "DALLAS", "GALVESTON", "GRAYSON", "HIDALGO", "LIBERTY", "MCLENNAN", "SMITH", "WILSON"));
     public static final ArrayList<String> WASHINGTON = new ArrayList(Arrays.asList("WALLA WALLA"));
 
-    private CountyCheck(){}
+    public static int total = 0;
+    public static int actual = 0;
+    public static Address currentWorking = new Address();
+
+    public CountyCheck(){}
 
     public static void countyCheck (String sourceFileName, String resultFileName, String state, String county, String city){
 
@@ -341,6 +345,9 @@ public class CountyCheck{
 //                case "CLINTON":
 //                    CountyCheck.Illinois.Clinton.countyCheck(sourceFileName, resultFileName, city);
 //                    break;
+                case "COOK":
+                    CountyCheck.Illinois.Cook.countyCheck(sourceFileName, resultFileName, city);
+                    break;
                 case "FAYETTE":
                     CountyCheck.Illinois.Fayette.countyCheck(sourceFileName, resultFileName, city);
                     break;
@@ -397,6 +404,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -404,6 +413,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number", current.getNumber());
@@ -490,6 +501,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -511,6 +524,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -518,6 +533,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "house-number-min", current.getNumber());
@@ -603,6 +620,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -624,6 +643,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -631,6 +652,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -716,6 +739,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -737,6 +762,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -744,6 +771,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -829,6 +858,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -850,6 +881,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -857,6 +890,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number", current.getNumber());
@@ -941,6 +976,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -962,6 +999,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -969,6 +1008,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1054,6 +1095,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1075,6 +1118,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1082,6 +1127,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1171,6 +1218,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1192,6 +1241,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1199,6 +1250,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1284,6 +1337,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1305,6 +1360,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1312,6 +1369,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1397,6 +1456,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1419,6 +1480,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1426,6 +1489,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1510,6 +1575,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1531,6 +1598,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1538,6 +1607,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1622,6 +1693,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1651,6 +1724,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1658,6 +1733,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number", current.getNumber());
@@ -1741,6 +1818,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1763,6 +1842,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1770,6 +1851,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1854,6 +1937,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1876,6 +1961,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -1883,6 +1970,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                    Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                    try{
                        Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -1967,6 +2056,8 @@ public class CountyCheck{
                        return;
                    }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -1994,6 +2085,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2001,6 +2094,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -2085,6 +2180,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2107,6 +2204,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2114,6 +2213,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -2198,6 +2299,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2219,6 +2322,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2226,6 +2331,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -2310,6 +2417,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2343,6 +2452,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2350,6 +2461,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -2434,6 +2547,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2461,6 +2576,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2468,6 +2585,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number", current.getNumber());
@@ -2551,6 +2670,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2584,6 +2705,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2591,6 +2714,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number", current.getNumber());
@@ -2674,6 +2799,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2702,6 +2829,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2709,6 +2838,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -2793,6 +2924,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2826,6 +2959,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2833,6 +2968,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
                         Web.ID.type(driver, "parcel-search-house-number-min", current.getNumber());
@@ -2917,6 +3054,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -2958,6 +3097,104 @@ public class CountyCheck{
             private Clinton(){}
         }
 
+        public class Cook{
+            private static final String url = "https://www.cookcountyassessor.com/advanced-search";
+            private static final int implicitWait = 5;
+            private Cook(){}
+
+            public static void countyCheck (String sourceFileName, String resultFileName, String city){
+                String screenshotPath = screenShotPath(resultFileName);
+
+                ArrayList<String> header = (new Address()).toStringArrayList();
+
+                Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
+                if (undecideds == null){return;}
+
+                total = undecideds.size();
+
+                Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
+
+                RemoteWebDriver driver = Web.chrome(implicitWait);
+                driver.get(url);
+
+                Actions search = new Actions(driver);
+
+                while (!(undecideds.peek() == null)){
+                    Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
+                    System.out.println(actual + "/" + total);
+
+                    try{
+
+                        Web.ID.clearTextBox(driver, "edit-get-housenumberbeg");
+                        Web.ID.type(driver, "edit-get-housenumberbeg", current.getNumber());
+                        Web.ID.clearTextBox(driver, "edit-get-housenumberend");
+                        Web.ID.type(driver, "edit-get-housenumberend", current.getNumber());
+                        Web.ID.clearTextBox(driver, "edit-get-streetname");
+                        Web.ID.type(driver, "edit-get-streetname", current.getName());
+                        Web.ID.clearTextBox(driver, "edit-get-city");
+                        Web.ID.type(driver, "edit-get-city", city);
+
+                        Web.ID.click(driver, "edit-submit");
+
+                        if (!Web.xPath.exists(driver, "/html/body/div[1]/div[3]/div/section/div[1]/div/div[2]/div/div/p\n")){
+                            //Result
+                            String potAddress = Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/div/section/div[2]/div[2]/table/tbody/tr/td[2]\n").toUpperCase();
+                            if ((potAddress.contains(current.getNumber().toUpperCase()))&&(potAddress.contains(current.getName().toUpperCase()))){
+                                //Good Address
+                                Web.xPath.click(driver, "/html/body/div[1]/div[3]/div/section/div[2]/div[2]/table/tbody/tr/td[1]/a\n");
+
+                                current.setPin(Web.xPath.getText(driver, "/html/body/div[1]/div[3]/div/section/div[2]/div/div[4]/div[1]/div/div[1]/span[2]\n"));
+                                current.setConfirmedCity(city);
+                                current.setTaxCode(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/div/section/div[2]/div/div[4]/div[2]/div/div[4]/span[2]\n"));
+                                try {
+                                    current.setLandValue(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/div/section/div[2]/div/div[5]/div[3]/div/div[1]/div[2]/div/div[1]/div[4]/div[2]\n"));
+                                } catch (Exception e){
+                                    current.setLandValue("0");
+                                }
+                                try {
+                                    current.setBuildingValue(Web.xPath.getTextFast(driver, "/html/body/div[1]/div[3]/div/section/div[2]/div/div[5]/div[3]/div/div[1]/div[2]/div/div[1]/div[5]/div[2]\n"));
+                                } catch (Exception e){
+                                    current.setBuildingValue("0");
+                                }
+
+                                if (current.isException()){
+                                    current.setStatus("EXCEPTION");
+                                    Web.takeScreenshot(driver, (screenshotPath + "\\" + current + ".JPG"), 50);
+                                } else {
+                                    current.setStatus("NOT EXCEPTION");
+                                }
+                                exceptions.offer(current.toStringArrayList());
+
+                                driver.get(url);
+                            } else {
+                                //Bad Address
+                                driver.get(url);
+                            }
+                        } else {
+                            //No Result
+                            driver.get(url);
+                        }
+
+                    } catch (Exception e){
+                        undecideds.offer(current.toStringArrayList());
+                        Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                        Excel.write(resultFileName, collectionConvert(exceptions), header);
+                        problem(e.getMessage());
+                        return;
+                    }
+                }
+                total = 0;
+                actual = 0;
+                Excel.write(sourceFileName, collectionConvert(undecideds), header);
+                Excel.write(resultFileName, collectionConvert(exceptions), header);
+                driver.close();
+                done(exceptions.size(), "ILLINOIS", "COOK");
+
+            }
+        }
+
         public class Fayette{
             private static final String url = "https://il1193.cichosting.com/atasportal/parcelSearch.aspx";
             private static final int implicitWait = 5;
@@ -2972,6 +3209,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -2981,6 +3220,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
 
@@ -3061,6 +3302,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -3084,6 +3327,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -3091,6 +3336,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
 
@@ -3184,6 +3431,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -3206,6 +3455,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -3213,6 +3464,9 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
+
                     try{
 
                         Web.xPath.type(driver, "/html/body/div[1]/div[3]/div[1]/form/span/span/span/p[1]/font/input\n", current.getNumber());
@@ -3278,6 +3532,8 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
@@ -3331,6 +3587,8 @@ public class CountyCheck{
                 Queue<ArrayList<String>> undecideds = readUndecideds(sourceFileName);
                 if (undecideds == null){return;}
 
+                total = undecideds.size();
+
                 Queue<ArrayList<String>> exceptions = initExceptions(resultFileName);
 
                 RemoteWebDriver driver = Web.chrome(implicitWait);
@@ -3338,6 +3596,8 @@ public class CountyCheck{
 
                 while (!(undecideds.peek() == null)){
                     Address current = new Address(undecideds.poll());
+                    currentWorking = current;
+                    actual += 1;
 
                     try{
 
@@ -3428,10 +3688,12 @@ public class CountyCheck{
                         return;
                     }
                 }
+                total = 0;
+                actual = 0;
                 Excel.write(sourceFileName, collectionConvert(undecideds), header);
                 Excel.write(resultFileName, collectionConvert(exceptions), header);
                 driver.close();
-                    done(exceptions.size(), "ILLINOIS", "WILL");
+                done(exceptions.size(), "ILLINOIS", "WILL");
             }
 
         }

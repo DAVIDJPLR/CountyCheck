@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CountyCheck2.7-Beta:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CountyCheck2_7_Beta_jar</output-path>
+    <root id="archive" name="CountyCheck.jar">
+      <element id="module-output" name="CountyCheck" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Dependancies/Web_1-5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Dependancies/Excel_1-7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../javafx-sdk-20.0.2/javafx-sdk-20.0.2/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Dependancies/Address_1-8.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
